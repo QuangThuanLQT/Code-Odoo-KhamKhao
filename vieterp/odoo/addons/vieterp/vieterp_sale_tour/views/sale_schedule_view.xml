@@ -1,0 +1,39 @@
+<odoo>
+  <data>
+
+      <record model="ir.ui.view" id="view_sale_schedule_tree">
+          <field name="name">view.sale.schedule.tree</field>
+          <field name="model">sale.schedule</field>
+          <field name="arch" type="xml">
+              <tree>
+                  <field name="schedule"/>
+                  <field name="description"/>
+              </tree>
+          </field>
+      </record>
+
+      <record model="ir.ui.view" id="view_sale_schedule_form">
+          <field name="name">view.sale.schedule.form</field>
+          <field name="model">sale.schedule</field>
+          <field name="arch" type="xml">
+              <form>
+                  <sheet>
+                      <group>
+                          <field name="schedule"/>
+                          <field name="description"/>
+                      </group>
+                  </sheet>
+              </form>
+          </field>
+      </record>
+
+       <record model="ir.actions.act_window" id="sale_schedule_action">
+          <field name="name">Lịch Trình</field>
+          <field name="res_model">sale.schedule</field>
+          <field name="view_mode">tree,form</field>
+      </record>
+
+
+      <!--<menuitem id="sale_schedule_menu" name="Lịch Trình" parent="sale_tour_menu_parent" action="sale_schedule_action"/>-->
+  </data>
+</odoo>

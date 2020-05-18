@@ -1,0 +1,73 @@
+<odoo>
+  <data>
+      <record model="ir.ui.view" id="view_chuong_trinh_tour_tree">
+          <field name="name">view.chuong.trinh.tour.tree</field>
+          <field name="model">chuong.trinh.tour</field>
+          <field name="arch" type="xml">
+              <tree>
+                  <field name="name"/>
+                  <field name="breakfast"/>
+                  <field name="lunch"/>
+                  <field name="dinner"/>
+              </tree>
+          </field>
+      </record>
+      <record model="ir.ui.view" id="view_chuong_trinh_tour_form">
+            <field name="name">view.chuong.trinh.tour.form</field>
+            <field name="model">chuong.trinh.tour</field>
+            <field name="arch" type="xml">
+                <form>
+                  <sheet>
+                      <group>
+                        <div class="oe_title">
+                          <h1>
+                            <field name="name" placeholder="Tiêu đề"/>
+                          </h1>
+                        </div>
+                      </group>
+                     <group>
+                      <group>
+                        <field name="breakfast"/>
+                        <field name="lunch"/>
+                        <field name="dinner"/>
+                      </group>
+                      <field name="description"/>
+                    </group>
+                  </sheet>
+                </form>
+            </field>
+        </record>
+
+    <record model="ir.actions.act_window" id="chuong_trinh_tour_action">
+          <field name="name">Chương trình tour</field>
+          <field name="res_model">chuong.trinh.tour</field>
+          <field name="view_type">form</field>
+          <field name="view_mode">tree,form</field>
+      </record>
+    <record id="product_template_only_view_ihr" model="ir.ui.view">
+            <field name="name">product.template.only.form.ihr</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//page[4]" position="before">
+                    <page string="Hành trình" attrs="{'invisible':['|',('type', '!=', 'service'),('type_service', '!=', 'tour')]}">
+                        <field name="hanh_trinh_line">
+                            <tree editable="bottom" >
+                                <field name="day" />
+                                <field name="hanh_trinh_id" />
+                                <field name="breakfast" readonly="1"/>
+                                <field name="lunch" readonly="1"/>
+                                <field name="dinner" readonly="1"/>
+
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+    </record>
+
+      <menuitem id="cau_hinh_tour_menu_parent" name="Cấu hình" parent="vieterp_sale_tour.tour_menu_parent" sequence="11"/>
+      <menuitem id="san_pham_tour" name="Sản phẩm" parent="cau_hinh_tour_menu_parent" action="product.product_template_action"/>
+      <menuitem id="chuong_trinh_tour_menu" name="Chương trình tour" parent="cau_hinh_tour_menu_parent" action="chuong_trinh_tour_action"/>
+  </data>
+</odoo>

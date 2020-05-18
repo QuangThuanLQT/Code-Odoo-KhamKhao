@@ -1,0 +1,34 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="view_sale_receipt_form_ihr">
+            <field name="name">view.sale.receipt.form.ihr</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_sale_receipt_form"/>
+            <field name="arch" type="xml">
+                <!--<xpath expr="//field[@name='tax_amount']" position="attributes">-->
+                    <!--<attribute name="invisible">1</attribute>-->
+                <!--</xpath>-->
+                 <xpath expr="//field[@name='account_id']" position="after">
+                    <field name="add_price"/>
+                     <field name="so_tien_thua"/>
+                </xpath>
+                <xpath expr="//page[1]" position="before">
+                    <page string="Hoá đơn" >
+                        <field name="invoice_line">
+                            <tree editable="bottom" create="false">
+                                <field name="sale_order_id" readonly="1"/>
+                                <field name="invoice" readonly="1"/>
+                                <field name="account_id"/>
+                                <field name="date_invoice" readonly="1"/>
+                                <field name="amount_total" readonly="1"/>
+                                <field name="amount_collected" readonly="1"/>
+                                <field name="residual" readonly="1"/>
+                                <field name="amount_receivable" />
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+  </data>
+</odoo>

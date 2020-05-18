@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+         <record id="cn" model="khoi.hanh">
+            <field name="name">Chủ nhật</field>
+        </record>
+
+        <record id="t7" model="khoi.hanh">
+            <field name="name">Thứ bảy</field>
+        </record>
+
+        <record id="t6" model="khoi.hanh">
+            <field name="name">Thứ sáu</field>
+        </record>
+        <record id="t5" model="khoi.hanh">
+            <field name="name">Thứ năm</field>
+        </record>
+        <record id="t4" model="khoi.hanh">
+            <field name="name">Thứ tư</field>
+        </record>
+        <record id="t3" model="khoi.hanh">
+            <field name="name">Thứ ba</field>
+        </record>
+        <record id="t2" model="khoi.hanh">
+            <field name="name">Thứ hai</field>
+        </record>
+        <record id="hang_ngay" model="khoi.hanh">
+            <field name="name">Hằng ngày</field>
+        </record>
+        <record id="theo_yeu_cau" model="khoi.hanh">
+            <field name="name">Theo yêu cầu</field>
+        </record>
+    </data>
+</odoo>

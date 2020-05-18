@@ -1,0 +1,210 @@
+<odoo>
+  <data>
+      <record id="bao_cao_doanh_thu_form_view" model="ir.ui.view">
+            <field name="name">bao.cao.doanh.thu.form</field>
+            <field name="model">bao.cao.tour</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header attrs="{'invisible': [('check_boolean', '=', False)]}">
+                        <h1>Báo cáo doanh thu</h1>
+                        <button name="print_sale_order_excel" type="object" string="In Excel" class="oe_highlight"/>
+                        <button string="Huỷ" class="btn-default" special="cancel" />
+                    </header>
+                    <sheet>
+                    <group>
+                      <group>
+                      <field name="start_date" attrs="{'readonly': [('check_boolean', '=', False)]}"/>
+                          <field name="check_boolean" invisible="1"/>
+                          <field name="check_boolean_tour_ghep" invisible="1"/>
+                          <field name="check_boolean_tour_tyc" invisible="1"/>
+                          <field name="check_boolean_spk" invisible="1"/>
+                      </group>
+                      <group>
+                      <field name="end_date" attrs="{'readonly': [('check_boolean', '=', False)]}"/>
+                      </group>
+                       <group>
+                      <field name="user_id" widget="many2many_tags" attrs="{'invisible': [('check_boolean', '=', False)]}"/>
+                       </group>
+                    </group>
+                        <separator string="Tổng DT Xe" attrs="{'invisible': ['|', '|',('count_report_xe', '=', 0),('check_boolean_tour_tyc', '=', False),('check_boolean_tour_ghep', '=', False)]}"/>
+                        <group attrs="{'invisible': ['|', '|',('count_report_xe', '=', 0),('check_boolean_tour_tyc', '=', False),('check_boolean_tour_ghep', '=', False)]}">
+                            <group>
+                              <field name="tong_cong_xe" readonly="1"/>
+                              <field name="tong_con_du_xe" readonly="1"/>
+                              <field name="tong_con_no_xe" readonly="1"/>
+                            </group>
+                            <group>
+                              <field name="tong_hdv_xe" readonly="1"/>
+                              <field name="tong_tm_xe" readonly="1"/>
+                              <field name="tong_ck_xe" readonly="1"/>
+                              <field name="count_report_xe" invisible="1"/>
+                            </group>
+                        </group>
+                        <field name="report_tour_xe_id" readonly="1" attrs="{'invisible': ['|', '|',('count_report_xe', '=', 0),('check_boolean_tour_tyc', '=', False),('check_boolean_tour_ghep', '=', False)]}">
+                            <tree>
+                                <field name="user_id"/>
+                                <field name="partner_id"/>
+                                <field name="code_dh"/>
+                                <field name="code_sale"/>
+                                <field name="sl"/>
+                                <field name="tong_tien"/>
+                                <field name="hdv_thu"/>
+                                <field name="tm"/>
+                                <field name="ck"/>
+                                <field name="con_du"/>
+                                <field name="con_no"/>
+                                <field name="chi_tiet_tt"/>
+                            </tree>
+                        </field>
+                        <separator string="Tổng DT Land" attrs="{'invisible': ['|', '|',('count_report_land', '=', 0),('check_boolean_spk', '=', False),('check_boolean_tour_ghep', '=', False)]}"/>
+                        <group attrs="{'invisible': ['|', '|',('count_report_land', '=', 0),('check_boolean_spk', '=', False),('check_boolean_tour_ghep', '=', False)]}">
+                            <group>
+                              <field name="tong_cong_land" readonly="1"/>
+                              <field name="tong_con_du_land" readonly="1"/>
+                              <field name="tong_con_no_land" readonly="1"/>
+                            </group>
+                            <group>
+                              <field name="tong_hdv_land" readonly="1"/>
+                              <field name="tong_tm_land" readonly="1"/>
+                              <field name="tong_ck_land" readonly="1"/>
+                                <field name="count_report_land" invisible="1"/>
+                            </group>
+                        </group>
+                        <field name="report_tour_land_id" readonly="1" attrs="{'invisible': ['|', '|',('count_report_land', '=', 0),('check_boolean_spk', '=', False),('check_boolean_tour_ghep', '=', False)]}">
+                            <tree>
+                                <field name="user_id"/>
+                                <field name="partner_id"/>
+                                <field name="code_dh"/>
+                                <field name="code_sale"/>
+                                <field name="sl"/>
+                                <field name="tong_tien"/>
+                                <field name="hdv_thu"/>
+                                <field name="tm"/>
+                                <field name="ck"/>
+                                <field name="con_du"/>
+                                <field name="con_no"/>
+                                <field name="chi_tiet_tt"/>
+                            </tree>
+                        </field>
+                    <separator string="Tổng DT Ghép" attrs="{'invisible': ['|', '|',('count_report_ghep', '=', 0),('check_boolean_spk', '=', False),('check_boolean_tour_tyc', '=', False)]}"/>
+                        <group attrs="{'invisible': ['|', '|',('count_report_ghep', '=', 0),('check_boolean_spk', '=', False),('check_boolean_tour_tyc', '=', False)]}">
+                            <group>
+                              <field name="tong_cong_ghep" readonly="1"/>
+                              <field name="tong_con_du_ghep" readonly="1"/>
+                              <field name="tong_con_no_ghep" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="tong_hdv_ghep" readonly="1"/>
+                                <field name="tong_tm_ghep" readonly="1"/>
+                                <field name="tong_ck_ghep" readonly="1"/>
+                                <field name="count_report_ghep" invisible="1"/>
+                            </group>
+                        </group>
+                        <field name="report_tour_ghep_id" readonly="1" attrs="{'invisible': ['|', '|',('count_report_ghep', '=', 0),('check_boolean_spk', '=', False),('check_boolean_tour_tyc', '=', False)]}">
+                            <tree>
+                                <field name="user_id"/>
+                                <field name="partner_id"/>
+                                <field name="code_dh"/>
+                                <field name="code_sale"/>
+                                <field name="sl"/>
+                                <field name="tong_tien"/>
+                                <field name="hdv_thu"/>
+                                <field name="tm"/>
+                                <field name="ck"/>
+                                <field name="con_du"/>
+                                <field name="con_no"/>
+                                <field name="chi_tiet_tt"/>
+                            </tree>
+                        </field>
+                    <separator string="Tổng DT Bà Nà" attrs="{'invisible': ['|', '|',('count_report_ba_na', '=', 0),('check_boolean_tour_tyc', '=', False),('check_boolean_tour_ghep', '=', False)]}"/>
+                        <group attrs="{'invisible': ['|', '|',('count_report_ba_na', '=', 0),('check_boolean_tour_tyc', '=', False),('check_boolean_tour_ghep', '=', False)]}">
+                            <group>
+                              <field name="tong_cong_ba_na" readonly="1"/>
+                              <field name="tong_con_du_ba_na" readonly="1"/>
+                              <field name="tong_con_no_ba_na" readonly="1"/>
+                            </group>
+                            <group>
+                              <field name="tong_hdv_ba_na" readonly="1"/>
+                              <field name="tong_tm_ba_na" readonly="1"/>
+                              <field name="tong_ck_ba_na" readonly="1"/>
+                                <field name="count_report_ba_na" invisible="1"/>
+                            </group>
+                        </group>
+                        <field name="report_tour_ba_na_id" readonly="1" attrs="{'invisible': ['|', '|',('count_report_ba_na', '=', 0),('check_boolean_tour_tyc', '=', False),('check_boolean_tour_ghep', '=', False)]}">
+                            <tree>
+                                <field name="user_id"/>
+                                <field name="partner_id"/>
+                                <field name="code_dh"/>
+                                <field name="code_sale"/>
+                                <field name="sl"/>
+                                <field name="tong_tien"/>
+                                <field name="hdv_thu"/>
+                                <field name="tm"/>
+                                <field name="ck"/>
+                                <field name="con_du"/>
+                                <field name="con_no"/>
+                                <field name="chi_tiet_tt"/>
+                            </tree>
+                        </field>
+                    <separator string="Tổng DT Vé Bà Nà" attrs="{'invisible': ['|', '|',('count_report_ve_bn', '=', 0),('check_boolean_tour_tyc', '=', False),('check_boolean_tour_ghep', '=', False)]}"/>
+                        <group attrs="{'invisible': ['|', '|',('count_report_ve_bn', '=', 0),('check_boolean_tour_tyc', '=', False),('check_boolean_tour_ghep', '=', False)]}">
+                            <group>
+                              <field name="tong_cong_ve_bn" readonly="1"/>
+                              <field name="tong_con_du_ve_bn" readonly="1"/>
+                              <field name="tong_con_no_ve_bn" readonly="1"/>
+                            </group>
+                            <group>
+                              <field name="tong_hdv_ve_bn" readonly="1"/>
+                              <field name="tong_tm_ve_bn" readonly="1"/>
+                              <field name="tong_ck_ve_bn" readonly="1"/>
+                                <field name="count_report_ve_bn" invisible="1"/>
+                            </group>
+                        </group>
+                        <field name="report_tour_ve_bn_id" readonly="1" attrs="{'invisible': ['|', '|',('count_report_ve_bn', '=', 0),('check_boolean_tour_tyc', '=', False),('check_boolean_tour_ghep', '=', False)]}">
+                            <tree>
+                                <field name="user_id"/>
+                                <field name="partner_id"/>
+                                <field name="code_dh"/>
+                                <field name="code_sale"/>
+                                <field name="sl"/>
+                                <field name="tong_tien"/>
+                                <field name="hdv_thu"/>
+                                <field name="tm"/>
+                                <field name="ck"/>
+                                <field name="con_du"/>
+                                <field name="con_no"/>
+                                <field name="chi_tiet_tt"/>
+                            </tree>
+                        </field>
+                    <separator string="Tổng Doanh Thu" attrs="{'invisible': ['|', '|',('count_report_all', '=', 0),('check_boolean', '=', False)]}"/>
+                        <group attrs="{'invisible': ['|', '|',('count_report_all', '=', 0),('check_boolean', '=', False)]}">
+                            <group>
+                              <field name="tong_cong_all" readonly="1"/>
+                              <field name="tong_con_du_all" readonly="1"/>
+                              <field name="tong_con_no_all" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="tong_hdv_all" readonly="1"/>
+                                <field name="tong_tm_all" readonly="1"/>
+                                <field name="tong_ck_all" readonly="1"/>
+                                <field name="count_report_all" invisible="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+      <record id="bao_cao_doanh_thu_action" model="ir.actions.act_window">
+            <field name="name">Báo cáo doanh thu</field>
+            <field name="res_model">bao.cao.tour</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="bao_cao_doanh_thu_form_view"/>
+            <field name="target">inline</field>
+        </record>
+
+      <menuitem id="bao_cao_tour_menu_parent" name="Báo cáo" parent="vieterp_sale_tour.tour_menu_parent" sequence="10"/>
+      <menuitem id="bao_cao_doanh_thu_menu" name="Báo cáo doanh thu" parent="bao_cao_tour_menu_parent" action="bao_cao_doanh_thu_action"/>
+  </data>
+</odoo>

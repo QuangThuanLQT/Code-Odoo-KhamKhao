@@ -1,0 +1,31 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="view_purchase_receipt_form_ihr">
+            <field name="name">view.purchase.receipt.form.ihr</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_purchase_receipt_form"/>
+            <field name="arch" type="xml">
+              <xpath expr="//field[@name='reference']" position="after">
+                  <field name="add_price_purchase"/>
+                  <field name="so_tien_thua_purchase"/>
+              </xpath>
+              <xpath expr="//page[1]" position="before">
+                    <page string="Hoá đơn" >
+                        <field name="invoice_purchase_line">
+                            <tree editable="bottom" create="false">
+                                <field name="purchase_order_id" readonly="1"/>
+                                <field name="invoice" readonly="1"/>
+                                <field name="account_id"/>
+                                <field name="date_invoice" readonly="1"/>
+                                <field name="amount_total" readonly="1"/>
+                                <field name="amount_collected" readonly="1"/>
+                                <field name="residual" readonly="1"/>
+                                <field name="amount_receivable" />
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+    </record>
+  </data>
+</odoo>

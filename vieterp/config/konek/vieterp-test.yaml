@@ -1,0 +1,86 @@
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: konek-nfs
+  namespace: konek
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: nfs.konek.svc.cluster.local
+    path: "/"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: konek-nfs
+  namespace: konek
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: odoo
+  namespace: konek
+  labels:
+    app: odoo
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: odoo
+        tier: backend
+    spec:
+      containers:
+        - image: gcr.io/vieterp-alpha-uat/odoo:10.7
+          name: odoo
+          env:
+          - name: HOST
+            value: db
+          - name: USER
+            value: odoo
+          - name: PASSWORD
+            value: odoo
+          securityContext:
+            privileged: true
+            runAsUser: 0
+          ports:
+            - containerPort: 8069
+              name: odoo
+          readinessProbe:
+            httpGet:
+              path: /web/database/selector
+              port: 8069
+          volumeMounts:
+          - name: konek-nfs
+            mountPath: /var/lib/odoo/
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "chown -R odoo. /var/log/odoo && chown -R odoo. /var/lib/odoo"]
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "400m"
+            limits:
+              memory: "2Gi"
+              cpu: "800m"
+      volumes:
+      - name: konek-nfs
+        persistentVolumeClaim:
+          claimName: konek-nfs

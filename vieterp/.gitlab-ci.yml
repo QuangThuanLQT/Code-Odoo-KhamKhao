@@ -1,0 +1,50 @@
+image: docker:latest
+services:
+  - docker:dind
+
+stages:
+  - build
+  - deploy
+
+variables:
+  CONTAINER_IMAGE: vieterp/odoo:${CI_COMMIT_SHORT_SHA}
+  CONTAINER_WORKER_IMAGE: vieterp/odoo:${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}-worker
+
+build:
+  stage: build
+  only:
+    refs:
+      - vieterp
+  script:
+    - echo $CI_COMMIT_REF_NAME
+    - docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
+    - docker build --build-arg CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME -t ${CONTAINER_IMAGE} .
+    - docker tag ${CONTAINER_IMAGE} ${CONTAINER_IMAGE}
+    - docker push ${CONTAINER_IMAGE}
+    - docker tag ${CONTAINER_IMAGE} vieterp/odoo:${CI_COMMIT_REF_NAME}
+    - docker push vieterp/odoo:${CI_COMMIT_REF_NAME}
+    - docker build --build-arg CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME -t ${CONTAINER_WORKER_IMAGE} ./worker/${CI_COMMIT_REF_NAME}
+    - docker tag ${CONTAINER_WORKER_IMAGE} ${CONTAINER_WORKER_IMAGE}
+    - docker push ${CONTAINER_WORKER_IMAGE}
+
+deploy:
+  stage: deploy
+  image: dtzar/helm-kubectl
+  only:
+    refs:
+      - vieterp
+  script:
+    - echo $CI_COMMIT_REF_NAME
+    - eval VIETERP_USER_TOKEN=\$USER_TOKEN_${CI_COMMIT_REF_NAME^^}
+    - kubectl config set-cluster vieterp --server="${SERVER}"
+    - kubectl config set clusters.vieterp.certificate-authority-data ${CERTIFICATE_AUTHORITY_DATA}
+    - kubectl config set-credentials gitlab --token="${VIETERP_USER_TOKEN}"
+    - kubectl config set-context default --cluster=vieterp --user=gitlab
+    - kubectl config use-context default
+    - sed -i "s/<VERSION>/${CI_COMMIT_SHORT_SHA}/g" ./config/${CI_COMMIT_REF_NAME}/vieterp-odoo.yaml
+    - kubectl apply -f ./config/${CI_COMMIT_REF_NAME}/vieterp.yaml
+    - kubectl apply -f ./config/${CI_COMMIT_REF_NAME}/vieterp-volume.yaml
+    - kubectl apply -f ./config/${CI_COMMIT_REF_NAME}/vieterp-db.yaml
+    - kubectl apply -f ./config/${CI_COMMIT_REF_NAME}/vieterp-redis.yaml
+    - kubectl apply -f ./config/${CI_COMMIT_REF_NAME}/vieterp-odoo.yaml
+    - kubectl apply -f ./config/${CI_COMMIT_REF_NAME}/vieterp-nginx.yaml

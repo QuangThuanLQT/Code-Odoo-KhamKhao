@@ -1,0 +1,42 @@
+<odoo>
+  <data>
+      <record id="product_template_dinh_muc" model="ir.ui.view">
+            <field name="name">product.template.dinh.muc</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//page[4]" position="before">
+                    <page string="Định mức" attrs="{'invisible':[('type_service', '!=', 'tour')]}">
+                        <field name="dinh_muc_tour_line">
+                            <tree editable="bottom" >
+                                <field name="name" />
+                                <field name="partner_id" />
+                                <field name="chi_tiet" domain="[('categ_id', '=', name)]"/>
+                                <field name="so_luong" />
+                                <field name="so_pax" />
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+    </record>
+
+      <record id="view_purchase_request_form_ihr" model="ir.ui.view">
+            <field name="name">view.purchase.request.ihr</field>
+            <field name="model">purchase.request</field>
+            <field name="inherit_id" ref="purchase_request.view_purchase_request_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='line_ids']/tree" position="attributes">
+                    <attribute name="editable">bottom</attribute>
+                </xpath>
+                 <xpath expr="//field[@name='product_id']" position="before">
+                     <field name="muc_phuc_vu"/>
+                     <field name="partner_id"/>
+                 </xpath>
+                <field name="date_required" position="after">
+                    <field name="sale_ids" widget="many2many_tags"/>
+                </field>
+            </field>
+      </record>
+  </data>
+</odoo>

@@ -1,0 +1,60 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mail
+  namespace: danang
+  labels:
+    app: mail
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - port: 25
+    name: smtp
+    protocol: TCP
+    targetPort: 1025
+  - port: 1025
+    name: smtp2
+    protocol: TCP
+    targetPort: 1025
+  - port: 1080
+    name: web
+    protocol: TCP
+    targetPort: 1080
+  selector:
+    app: mail
+    tier: backend
+  sessionAffinity: None
+  type: LoadBalancer
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mail
+  namespace: danang
+  labels:
+    app: mail
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mail
+        tier: backend
+    spec:
+      containers:
+      - image: gcr.io/vieterp-prinizi/mail:2.4
+        name: mail
+        ports:
+        - containerPort: 1025
+          name: smtp
+        - containerPort: 1080
+          name: web
+        resources:
+          requests:
+            memory: "20Mi"
+            cpu: "50m"
+          limits:
+            memory: "40Mi"
+            cpu: "100m"

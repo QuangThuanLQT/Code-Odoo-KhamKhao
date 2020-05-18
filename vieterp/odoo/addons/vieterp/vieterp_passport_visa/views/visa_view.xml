@@ -1,0 +1,177 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_visa_booking_tree">
+          <field name="name">visa.booking.tree</field>
+          <field name="model">visa.booking</field>
+          <field name="arch" type="xml">
+              <tree>
+                  <field name="name"/>
+                  <field name="visa_number"/>
+                  <field name="customer_id"/>
+                  <field name="holder_id"/>
+                  <field name="country_id"/>
+                  <field name="type_visa"/>
+                  <field name="price"/>
+                  <field name="state"/>
+              </tree>
+          </field>
+      </record>
+
+        <record model="ir.ui.view" id="view_visa_booking_form">
+          <field name="name">visa.booking.form</field>
+          <field name="model">visa.booking</field>
+          <field name="arch" type="xml">
+            <form string="Visa Booking">
+                <header>
+                    <button name="confirm" string="Confirm" type="object" states="draft" class="oe_highlight"/>
+                    <button name="verify" string="Verify Document" type="object" states="confirm" class="oe_highlight"/>
+                    <button name="approve" string="Approve By Officer" type="object" states="verify" class="oe_highlight"/>
+                    <button name="issue_visa" string="Issue Visa" type="object" states="approve" class="oe_highlight"/>
+                    <field name="state" readonly="1" statusbar_visible="draft, confirm, verify, approve, done" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" string="Mã đặt"/>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Thông tin đặt">
+                            <field name="customer_id" context="{'search_default_customer':1,'default_customer':1,'search_default_is_company':0,'default_is_company':0}"/>
+                            <field name="pricelist_id"/>
+                            <field name="email"/>
+                            <field name="mobile"/>
+                            <field name="ngay_dat"/>
+                            <field name="nguoi_phu_trach"/>
+                        </group>
+                        <group string="Thông tin Visa">
+                            <field name="holder_id"/>
+                            <field name="visa_number" attrs="{'readonly': [('state','in',('draft','confirm','verify','done','cancel'))], 'required': [('state','=','approve')]}"/>
+                            <field name="ngay_cap" attrs="{'readonly': [('state','in',('draft','confirm','verify','done','cancel'))], 'required': [('state','=','approve')]}"/>
+                            <field name="ngay_het_han" attrs="{'readonly': [('state','in',('draft','confirm','verify','done','cancel'))], 'required': [('state','=','approve')]}"/>
+                            <field name="country_id"/>
+                            <field name="passport_id"/>
+                            <field name="type_visa"/>
+                            <field name="product_id" context="{'search_default_sale_ok':1,'default_sale_ok':1,'search_default_type':'service','default_type':'service'}"/>
+                            <field name="price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                    </group>
+                    <!--<notebook>-->
+                        <!--<page string="Tài liệu yêu cầu">-->
+                            <!--<field name="docurement_ids">-->
+                                <!--<tree editable="bottom">-->
+                                    <!--<field name="document_type_id"/>-->
+                                    <!--<field name="description"/>-->
+                                    <!--<field name="qty_original"/>-->
+                                <!--</tree>-->
+                            <!--</field>-->
+                        <!--</page>-->
+                        <!--<page string="Đính kèm">-->
+                            <!--<field name="attachment_ids">-->
+                                <!--<tree string="Attachments">-->
+                                    <!--<field name="name"/>-->
+                                    <!--<field name="datas_fname"/>-->
+                                    <!--<field name="document_type_id"/>-->
+                                    <!--<field name="type"/>-->
+                                    <!--<field name="create_uid"/>-->
+                                    <!--<field name="create_date"/>-->
+                                <!--</tree>-->
+                            <!--</field>-->
+                        <!--</page>-->
+                        <!--<page string="Đơn hàng &amp; Hóa đơn">-->
+                            <!--<separator string="Đơn hàng"/>-->
+                            <!--<field name="sale_ids"/>-->
+                            <!--<separator string="Hóa đơn"/>-->
+                            <!--<field name="invoice_ids"/>-->
+                        <!--</page>-->
+                    <!--</notebook>-->
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+          </field>
+      </record>
+
+        <record model="ir.actions.act_window" id="visa_booking_action">
+          <field name="name">Đăng ký Visa</field>
+          <field name="res_model">visa.booking</field>
+          <field name="view_mode">tree,form</field>
+      </record>
+
+        <record model="ir.ui.view" id="view_visa_tree">
+          <field name="name">visa.tree</field>
+          <field name="model">visa</field>
+          <field name="arch" type="xml">
+              <tree>
+                  <field name="name"/>
+                  <field name="passport_id"/>
+                  <field name="country_id"/>
+                  <field name="partner_id"/>
+                  <field name="type_visa"/>
+                  <field name="ngay_cap"/>
+                  <field name="ngay_het_han"/>
+                  <field name="state"/>
+              </tree>
+          </field>
+      </record>
+
+        <record model="ir.ui.view" id="view_visa_form">
+          <field name="name">visa.form</field>
+          <field name="model">visa</field>
+          <field name="arch" type="xml">
+            <form string="Visa">
+                <header>
+                    <button name="action_expire" string="Hết hạn" type="object" states="available" class="oe_highlight"/>
+                    <field name="state" readonly="1" statusbar_visible="available, expire" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <field name="image" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;:&quot;image_medium&quot;}"/>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id" context="{'search_default_customer':1,'default_customer':1,'search_default_is_company':0,'default_is_company':0}"/>
+                            <field name="ngay_cap"/>
+                            <field name="ngay_het_han"/>
+                        </group>
+                        <group>
+                            <field name="country_id"/>
+                            <field name="type_visa"/>
+                            <field name="passport_id"/>
+                        </group>
+                    </group>
+                    <separator string="Visa"/>
+                    <!--<field name="visa_ids">-->
+                        <!--<tree string="Visa" colors="gray:state in ('expire')">-->
+                            <!--<field name="name"/>-->
+                            <!--<field name="country_id"/>-->
+                            <!--<field name="partner_id"/>-->
+                            <!--<field name="type_id"/>-->
+                            <!--<field name="issue_date"/>-->
+                            <!--<field name="expiry_date"/>-->
+                            <!--<field name="state"/>-->
+                        <!--</tree>-->
+                    <!--</field>-->
+                </sheet>
+            </form>
+          </field>
+      </record>
+
+         <record model="ir.actions.act_window" id="visa_action">
+          <field name="name">Visa</field>
+          <field name="res_model">visa</field>
+          <field name="view_mode">tree,form</field>
+      </record>
+
+        <menuitem id="visa_booking_menu_parent" name="Visa" parent="vieterp_sale_tour.tour_menu_parent"/>
+        <menuitem id="booking_menu_visa" name="Visa" parent="visa_booking_menu_parent" action="visa_action" sequence="3"/>
+        <menuitem id="visa_booking_menu" name="Đăng ký Visa" parent="visa_booking_menu_parent" action="visa_booking_action" sequence="4"/>
+    </data>
+</odoo>

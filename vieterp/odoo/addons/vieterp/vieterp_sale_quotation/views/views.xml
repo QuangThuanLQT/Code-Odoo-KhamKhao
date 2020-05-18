@@ -1,0 +1,74 @@
+<odoo>
+  <data>
+    <record id="view_quotation_tree_ihr" model="ir.ui.view">
+            <field name="name">sale.order.tree.quotation.ihr</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+              <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="string">Mã báo giá</attribute>
+              </xpath>
+              <xpath expr="//field[@name='date_order']" position="attributes">
+                <attribute name="string">Thời gian đặt hàng</attribute>
+              </xpath>
+              <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="string">Khách hàng</attribute>
+              </xpath>
+              <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="string">Nhân viên bán hàng</attribute>
+              </xpath>
+              <xpath expr="//field[@name='amount_total']" position="attributes">
+                <attribute name="string">Tổng</attribute>
+              </xpath>
+              <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="string">Trạng thái</attribute>
+              </xpath>
+              <xpath expr="//field[@name='user_id']" position="after">
+                <field name="note" string="Ghi chú"/>
+              </xpath>
+              <xpath expr="//field[@name='state']" position="after">
+                <field name="create_uid" invisible="1" string="Người tạo"/>
+                <field name="product_id" string="Mã, tên SP" invisible="1"/>
+              </xpath>
+            </field>
+    </record>
+      <record id="product_multi_select_form_quo" model="ir.ui.view">
+			<field name="name">product.multi.select.form</field>
+			<field name="model">product.multi.select.quotation</field>
+			<field name="arch" type="xml">
+				<form string="" version="7.0">
+                    <separator string="Sản phẩm"/>
+                   <field name="product_ids">
+                        <tree>
+                            <field name="name" string="Tên"/>
+                        </tree>
+                    </field>
+					<footer>
+						<button name="add_product_to_line" string="Apply" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel" />
+					</footer>
+				</form>
+
+			</field>
+		</record>
+    <record id="action_product_multi_select_wizard_quo" model="ir.actions.act_window">
+            <field name="name">Chọn nhiều sản phẩm</field>
+            <field name="res_model">product.multi.select.quotation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="product_multi_select_form_quo"/>
+            <field name="target">new</field>
+        </record>
+
+      <record id="view_order_form__quotation_ihr" model="ir.ui.view">
+            <field name="name">sale.order.form.ihr</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']" position="before">
+                  <button name="%(action_product_multi_select_wizard_quo)d" type="action" string="CHỌN NHANH" class="oe_edit_only "/>
+                </xpath>
+            </field>
+    </record>
+  </data>
+</odoo>

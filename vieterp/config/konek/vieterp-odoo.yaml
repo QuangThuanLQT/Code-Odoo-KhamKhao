@@ -1,0 +1,240 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: odoo
+  namespace: konek
+  labels:
+    app: odoo
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - port: 8069
+  selector:
+    app: odoo
+    tier: backend
+  sessionAffinity: None
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: odoo
+  namespace: konek
+  labels:
+    app: odoo
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: odoo
+        tier: backend
+    spec:
+      containers:
+        - image: gcr.io/<PROJECT>/odoo:konek-<SHA>
+          name: odoo
+          env:
+          - name: HOST
+            value: db
+          - name: USER
+            value: odoo
+          - name: PASSWORD
+            value: odoo
+          securityContext:
+            privileged: true
+            runAsUser: 0
+          ports:
+            - containerPort: 8069
+              name: odoo
+#          readinessProbe:
+#            httpGet:
+#              path: /web/database/selector
+#              port: 8069
+          volumeMounts:
+          - name: konek-filestore-nfs
+            mountPath: /var/lib/odoo/.local/share/Odoo/filestore/
+          - name: konek-venv-nfs
+            mountPath: /opt/venv
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "chown -R odoo. /var/log/odoo"]
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "400m"
+            limits:
+              memory: "2Gi"
+              cpu: "800m"
+      volumes:
+      - name: konek-filestore-nfs
+        persistentVolumeClaim:
+          claimName: konek-filestore-nfs
+      - name: konek-venv-nfs
+        persistentVolumeClaim:
+          claimName: konek-venv-nfs
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: odoo
+  namespace: konek
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: odoo
+  minReplicas: 4
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mobile
+  namespace: konek
+  labels:
+    app: mobile
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - port: 8069
+  selector:
+    app: mobile
+    tier: backend
+  sessionAffinity: None
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mobile
+  namespace: konek
+  labels:
+    app: mobile
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: mobile
+        tier: backend
+    spec:
+      containers:
+        - image: gcr.io/<PROJECT>/odoo:konek-<SHA>
+          name: mobile
+          env:
+          - name: HOST
+            value: db
+          - name: USER
+            value: odoo
+          - name: PASSWORD
+            value: odoo
+          securityContext:
+            privileged: true
+            runAsUser: 0
+          ports:
+            - containerPort: 8069
+              name: mobile
+          readinessProbe:
+            httpGet:
+              path: /web/database/selector
+              port: 8069
+          volumeMounts:
+          - name: konek-filestore-nfs
+            mountPath: /var/lib/odoo/.local/share/Odoo/filestore/
+          - name: konek-venv-nfs
+            mountPath: /opt/venv
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "chown -R odoo. /var/log/odoo"]
+          resources:
+            requests:
+              memory: "600Mi"
+              cpu: "100m"
+            limits:
+              memory: "1200Mi"
+              cpu: "200m"
+      volumes:
+      - name: konek-filestore-nfs
+        persistentVolumeClaim:
+          claimName: <BRANCH>-filestore-nfs
+      - name: <BRANCH>-venv-nfs
+        persistentVolumeClaim:
+          claimName: <BRANCH>-venv-nfs
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: worker
+  namespace: konek
+  labels:
+    app: worker
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: worker
+        tier: backend
+    spec:
+      containers:
+        - image: gcr.io/<PROJECT>/odoo:konek-<SHA>-worker
+          name: worker
+          env:
+          - name: HOST
+            value: db
+          - name: USER
+            value: odoo
+          - name: PASSWORD
+            value: odoo
+          securityContext:
+            privileged: true
+            runAsUser: 0
+          ports:
+            - containerPort: 8069
+              name: mobile
+          readinessProbe:
+            httpGet:
+              path: /web/database/selector
+              port: 8069
+          volumeMounts:
+          - name: konek-filestore-nfs
+            mountPath: /var/lib/odoo/.local/share/Odoo/filestore/
+          - name: konek-venv-nfs
+            mountPath: /opt/venv
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "chown -R odoo. /var/log/odoo"]
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "400m"
+            limits:
+              memory: "2Gi"
+              cpu: "800m"
+      volumes:
+      - name: konek-filestore-nfs
+        persistentVolumeClaim:
+          claimName: konek-filestore-nfs
+      - name: konek-venv-nfs
+        persistentVolumeClaim:
+          claimName: konek-venv-nfs

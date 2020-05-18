@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="display_date">
+        <style type="text/css" t-if="! widget.isFirefox">
+            .o_control_panel.o_breadcrumb_full, .oe_view_nocontent {
+                display: none;
+            }
+        </style>
+        <div class="openerp oe_kanban_view hr_dash col-xs-12 col-md-12 col-lg-12 col-sm-8">
+            <div class="container-fluid" style="padding-top: 13px">
+                <div style="margin-bottom : 5px;display: flex">
+                    <div style="font-size: 17px;margin-top: 0px;" >
+                        <strong style="margin-right: 30px;">THÔNG SỐ BÁN HÀNG</strong>
+                        <input type="date" class="dashboard_start_date" t-att-value="widget.dashboard_start_date" style="border-radius: 10px;"/>
+                        <input type="date" class="dashboard_end_date" t-att-value="widget.dashboard_end_date" style="border-radius: 10px;"/>
+                        <input type="button" value="Xem" class="create_sale oe_highlight" style="border-radius: 15px; width: 95px;"/>
+                         <!--<t t-name="sale_return_print">-->
+                            <!--<button type="button" class='o_sale_return_excel' >Export Detail</button>-->
+                        <!--</t>-->
+                  </div>
+                </div>
+            </div>
+            <div class="hr_dashboard_header">
+            </div>
+        </div>
+    </t>
+
+    <t t-name="vieterp_tour_manager.dashboard_tour">
+        <style type="text/css" t-if="! widget.isFirefox">
+            .o_control_panel.o_breadcrumb_full, .oe_view_nocontent {
+                display: none;
+            }
+        </style>
+        <div class="openerp oe_kanban_view hr_dash col-xs-12 col-md-12 col-lg-12 col-sm-8 hr_dashboard_header_render">
+            <div class="container-fluid" style="padding-top: 13px">
+                <div class="row " style="display: flex">
+                    <div style="width:20%; margin:0px 2px" class="action_sale_order_tour">
+                      <a href="javascript:;" class="dashboard-block payslip"  style="border-radius: 15px;">
+                        <div class="details">
+                          <span class="title"></span>
+                            <table>
+                                <tr>
+                                    <td style="width:20%">
+                                        <img src="/vieterp_tour_manager/static/src/img/sale.png" style="width:70%"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <strong>ĐƠN HÀNG</strong>
+                                        <span class="sub"><t t-esc="widget.sale_data.tong_don_ban"/> </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                      </a>
+                    </div>
+                    <div style="width:20%; border-radius: 10px; margin:0px 2px" class="action_sale_order_tour_ghep">
+                      <a href="javascript:;" class="dashboard-block payslip" style="border-radius: 15px;">
+                        <div class="details">
+                          <span class="title"></span>
+                            <table>
+                                <tr>
+                                    <td style="width:20%">
+                                        <img src="/vieterp_tour_manager/static/src/img/sale.png" style="width:70%"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <strong>TOUR GHÉP</strong>
+                                        <span class="sub"><t t-esc="widget.sale_data.tong_don_tour_ghep"/> </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                      </a>
+                    </div>
+                    <div style="width:20%; border-radius: 10px; margin:0px 2px" class="action_sale_order_tour_tyc">
+                      <a href="javascript:;" class="dashboard-block payslip" style="border-radius: 15px;">
+                        <div class="details">
+                          <span class="title"></span>
+                            <table>
+                                <tr>
+                                    <td style="width:20%">
+                                        <img src="/vieterp_tour_manager/static/src/img/sale.png" style="width:70%"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <strong>TOUR ĐOÀN</strong>
+                                        <span class="sub"><t t-esc="widget.sale_data.tong_don_tour_tyc"/> </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                      </a>
+                    </div>
+                    <div style="width:20%; margin:0px 2px" class="action_sale_order_spk">
+                      <a href="javascript:;" class="dashboard-block payslip" style="border-radius: 15px;">
+                        <div class="details">
+                          <span class="title"></span>
+                            <table>
+                                <tr>
+                                    <td style="width:20%">
+                                        <img src="/vieterp_tour_manager/static/src/img/sale.png" style="width:70%"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <strong>SẢN PHẨM KHÁC</strong>
+                                        <span class="sub"><t t-esc="widget.sale_data.tong_don_spk"/> </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                      </a>
+                    </div>
+                    <div style="width:20%; margin:0px 2px">
+                      <a href="javascript:;" class="dashboard-block payslip" style="border-radius: 15px;">
+                        <div class="details">
+                          <span class="title"></span>
+                            <table>
+                                <tr>
+                                    <td style="width:20%">
+                                        <img src="/vieterp_tour_manager/static/src/img/dollar.png" style="width:70%"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <strong>DOANH SỐ</strong>
+                                        <span class="sub"><t t-esc="widget.sale_data.tong_doanh_thu"/> </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                      </a>
+                    </div>
+                </div>
+                <div class="row " style="display: flex" >
+                    <div style="width:20%; margin:0px 2px" class="action_purchase_tour">
+                      <a href="javascript:;" class="dashboard-block payslip" style="border-radius: 15px;">
+                        <div class="details">
+                          <span class="title"></span>
+                            <table>
+                                <tr>
+                                    <td style="width:20%">
+                                        <img src="/vieterp_tour_manager/static/src/img/tb_sale.png" style="width:70%"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <strong>ĐIỀU HÀNH</strong>
+                                        <span class="sub"><t t-esc="widget.sale_data.tong_dieu_hanh"/> </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                      </a>
+                    </div>
+                    <div style="width:20%; margin:0px 2px" class="action_purchase_tour_ghep">
+                      <a href="javascript:;" class="dashboard-block payslip" style="border-radius: 15px;">
+                        <div class="details">
+                          <span class="title"></span>
+                            <table>
+                                <tr>
+                                    <td style="width:20%">
+                                        <img src="/vieterp_tour_manager/static/src/img/tb_sale.png" style="width:70%"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <strong>TOUR GHÉP</strong>
+                                        <span class="sub"><t t-esc="widget.sale_data.tong_dieu_hanh_ghep"/> </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                      </a>
+                    </div>
+                    <div style="width:20%; margin:0px 2px" class="action_purchase_tour_tyc">
+                      <a href="javascript:;" class="dashboard-block payslip" style="border-radius: 15px;">
+                        <div class="details">
+                          <span class="title"></span>
+                            <table>
+                                <tr>
+                                    <td style="width:20%">
+                                        <img src="/vieterp_tour_manager/static/src/img/tb_sale.png" style="width:70%"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <strong>TOUR ĐOÀN</strong>
+                                        <span class="sub"><t t-esc="widget.sale_data.tong_dieu_hanh_tyc"/> </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                      </a>
+                    </div>
+                    <div style="width:20%; margin:0px 2px">
+                      <a href="javascript:;" class="dashboard-block payslip" style="border-radius: 15px;">
+                        <div class="details">
+                          <span class="title"></span>
+                            <table>
+                                <tr>
+                                    <td style="width:20%">
+                                        <img src="/vieterp_tour_manager/static/src/img/dollar.png" style="width:70%"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <strong>CHI PHÍ</strong>
+                                        <span class="sub"><t t-esc="widget.sale_data.tong_chi_phi"/> </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                      </a>
+                    </div>
+                    <div style="width:20%; margin:0px 2px">
+                      <a href="javascript:;" class="dashboard-block payslip" style="border-radius: 15px;">
+                        <div class="details">
+                          <span class="title"></span>
+                            <table>
+                                <tr>
+                                    <td style="width:20%">
+                                        <img src="/vieterp_tour_manager/static/src/img/dollar.png" style="width:70%"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <strong>LỢI NHUẬN</strong>
+                                        <span class="sub"><t t-esc="widget.sale_data.tong_loi_nhuan"/> </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                      </a>
+                    </div>
+                </div>
+                <div class="row " style="display: flex" >
+                    <div style="width:20%; margin:0px 2px">
+                      <a href="javascript:;" class="dashboard-block payslip" style="border-radius: 15px;">
+                        <div class="details">
+                          <span class="title"></span>
+                            <table>
+                                <tr>
+                                    <td style="width:20%">
+                                        <img src="/vieterp_tour_manager/static/src/img/ke_toan.png" style="width:70%"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <strong>KẾ TOÁN</strong>
+                                        <div></div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                      </a>
+                    </div>
+                    <div style="width:20%; margin:0px 2px" class="action_account_invoice_sale">
+                      <a href="javascript:;" class="dashboard-block payslip" style="border-radius: 15px;">
+                        <div class="details">
+                          <span class="title"></span>
+                            <table>
+                                <tr>
+                                    <td style="width:20%">
+                                        <img src="/vieterp_tour_manager/static/src/img/ke_toan.png" style="width:70%"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <strong>HOÁ ĐƠN BÁN HÀNG</strong>
+                                        <span class="sub"><t t-esc="widget.sale_data.tong_hoa_don_ban_hang"/> </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                      </a>
+                    </div>
+                    <div style="width:20%; margin:0px 2px" class="action_account_invoice_purchase">
+                      <a href="javascript:;" class="dashboard-block payslip" style="border-radius: 15px;">
+                        <div class="details">
+                          <span class="title"></span>
+                            <table>
+                                <tr>
+                                    <td style="width:20%">
+                                        <img src="/vieterp_tour_manager/static/src/img/ke_toan.png" style="width:70%"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <strong>HOÁ ĐƠN MUA HÀNG</strong>
+                                        <span class="sub"><t t-esc="widget.sale_data.tong_hoa_don_mua_hang"/> </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                      </a>
+                    </div>
+                    <div style="width:20%; margin:0px 2px">
+                      <a href="javascript:;" class="dashboard-block payslip" style="border-radius: 15px;">
+                        <div class="details">
+                          <span class="title"></span>
+                            <table>
+                                <tr>
+                                    <td style="width:20%">
+                                        <img src="/vieterp_tour_manager/static/src/img/dollar.png" style="width:70%"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <strong>TỒNG HDV THU</strong>
+                                        <span class="sub"><t t-esc="widget.sale_data.tong_hdv_thu"/> </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                      </a>
+                    </div>
+                    <div style="width:20%; margin:0px 2px">
+                      <a href="javascript:;" class="dashboard-block payslip" style="border-radius: 15px;">
+                        <div class="details">
+                          <span class="title"></span>
+                            <table>
+                                <tr>
+                                    <td style="width:20%">
+                                        <img src="/vieterp_tour_manager/static/src/img/dollar.png" style="width:70%"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <strong>TỔNG KẾ TOÁN PHẢI CHI</strong>
+                                        <span class="sub"><t t-esc="widget.sale_data.tong_ke_toan_thu"/> </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                      </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-content">
+				<div class="container-fluid">
+                  <div class="row" style="background-color: white;">
+                          <div style="display: flex">
+                            <a href="javascript:;" class="create_sale" style="margin-right: 5px;width:7%">
+                                <div class="button_in_line" style="background: #1F9880;width:100%;height: 35px !important;font-size: 12px;color: white;margin: 5px 2px;">
+                                    <strong>Tạo mới báo giá</strong>
+                                </div>
+                            </a>
+                            <a href="javascript:;" class="refresh_page" style="display: flex;width:6%; margin: 0px 5px 0px 10px;">
+                                <div class="button_in_line" style="background: #8765c3;width:100%;height: 35px !important;font-size: 12px;color: white;margin: 5px 2px;">
+                                    <strong>LÀM MỚI</strong>
+                                </div>
+                            </a>
+                              <div style="font-size: 17px; margin: 10px 0px;">
+                                    <strong>Danh sách đơn hàng chờ Sale xác nhận</strong>
+                              </div>
+                          </div>
+                        <table class="o_list_view table table-condensed table-striped">
+                            <thead>
+                                <tr class="text-center">
+                                    <th class="text-center">Nhân viên bán hàng</th>
+                                    <th class="text-center">Code ĐH</th>
+                                    <th class="text-center">Code Sale</th>
+                                    <th class="text-center">SL</th>
+                                    <th class="text-center">Tổng tiền</th>
+                                    <th class="text-center">HDV Thu hộ</th>
+                                    <th class="text-center">TM</th>
+                                    <th class="text-center">CK</th>
+                                    <th class="text-center">Còn dư</th>
+                                    <th class="text-center">Còn nợ</th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <!--<th class="text-right"><t t-esc="widget.sale_data.total_quotaion"/></th>-->
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!--<tr t-foreach="widget.sale_data.quotation_list" t-as="q">-->
+                                    <!--<td style="width:10%"><span t-esc="q['name']"/></td>-->
+                                    <!--<td style="width:8%">-->
+                                        <!--<t t-if="q['confirmation_date']">-->
+                                            <!--<span t-esc="q['confirmation_date'].split(' ')[0]"/><br/>-->
+                                            <!--<span t-esc="q['confirmation_date'].split(' ')[1]"/>-->
+                                        <!--</t>-->
+                                    <!--</td>-->
+                                    <!--<td style="width:14%"><span t-esc="q['partner_id']"/></td>-->
+                                    <!--<td style="width:15%"><span t-esc="q['note']"/></td>-->
+                                    <!--<td style="width:8%" class="text-right"><span t-esc="q['amount_total']"/></td>-->
+                                    <!--<td style="width:8%" class="text-right"><span t-esc="q['state']"/></td>-->
+                                    <!--<td style="width:37%">-->
+                                        <!--<div style="width:100%;display: flex;">-->
+                                            <!--<t t-if="q['state_value'] != 'cancel'">-->
+                                                <!--<a href="javascript:;" class="doash_edit" style="display: flex;width:20%" t-att-data-line-id="q['id']">-->
+                                                    <!--&lt;!&ndash;<span class="glyphicon glyphicon-edit" style="width: 22%; font-size: 23px; color: #8CB05E;"></span>&ndash;&gt;-->
+                                                    <!--<div class="button_in_line">-->
+                                                        <!--<img src="/vieterp_tour_manager/static/src/img/button_edit.png" style="width:45%"/>-->
+                                                    <!--</div>-->
+                                                <!--</a>-->
+                                                <!--<a href="javascript:;" class="action_confirm" style="display: flex;width:22%; margin-left: 19%;" t-att-data-line-id="q['id']">-->
+                                                    <!--&lt;!&ndash;<span class="glyphicon glyphicon-check" style="width: 22%; font-size: 23px; color: #4AE4DE;"></span>&ndash;&gt;-->
+                                                    <!--<div class="button_in_line" >-->
+                                                        <!--<img src="/vieterp_tour_manager/static/src/img/button_confirm.png" style="width:47%"/>-->
+                                                    <!--</div>-->
+                                                <!--</a>-->
+                                                <!--<a href="javascript:;" class="action_cancel" style="display: flex;width:20%; margin-left: 19%;" t-att-data-line-id="q['id']">-->
+                                                    <!--&lt;!&ndash;<img src="/vieterp_tour_manager/static/src/img/cancel_sale.png" style="width:19%"/>&ndash;&gt;-->
+                                                    <!--<div class="button_in_line" >-->
+                                                        <!--<img src="/vieterp_tour_manager/static/src/img/button_cancel.png" style="width:60%"/>-->
+                                                    <!--</div>-->
+                                                <!--</a>-->
+                                                <!--<a href="javascript:;"  style="display: flex;width:20%; margin-left: 19%;" t-att-data-line-id="q['id']">-->
+                                                    <!--&lt;!&ndash;<img src="/vieterp_tour_manager/static/src/img/cancel_sale.png" style="width:19%"/>&ndash;&gt;-->
+                                                    <!--&lt;!&ndash;<div class="button_in_line" >&ndash;&gt;-->
+                                                        <!--&lt;!&ndash;<img src="/vieterp_tour_manager/static/src/img/button_set_draft.png" style="width:60%"/>&ndash;&gt;-->
+                                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                                <!--</a>-->
+                                            <!--</t>-->
+                                            <!--<t t-if="q['state_value'] == 'cancel'">-->
+                                                <!--<a href="javascript:;" style="display: flex;width:20%" t-att-data-line-id="q['id']"></a>-->
+                                                <!--<a href="javascript:;" style="display: flex;width:22%; margin-left: 19%;" t-att-data-line-id="q['id']"></a>-->
+                                                <!--<a href="javascript:;" style="display: flex;width:20%; margin-left: 19%;" t-att-data-line-id="q['id']"></a>-->
+                                                <!--<a href="javascript:;" class="action_set_draft" style="display: flex;width:20%; margin-left: 19%;" t-att-data-line-id="q['id']">-->
+                                                    <!--&lt;!&ndash;<img src="/vieterp_tour_manager/static/src/img/cancel_sale.png" style="width:19%"/>&ndash;&gt;-->
+                                                    <!--<div class="button_in_line" >-->
+                                                        <!--<img src="/vieterp_tour_manager/static/src/img/button_set_draft.png" style="width:60%"/>-->
+                                                    <!--</div>-->
+                                                <!--</a>-->
+                                            <!--</t>-->
+
+                                        <!--</div>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                            </tbody>
+                        </table>
+                      <div style="font-size: 17px; margin: 10px 0px;">
+                            <strong>Danh sách đơn hàng chờ Tạo phiếu thu</strong>
+                      </div>
+                      <table class="o_list_view table table-condensed table-striped">
+                            <thead>
+                                <tr class="text-center">
+                                    <th class="text-center">Mã đơn hàng</th>
+                                    <th class="text-center">Thời gian tạo</th>
+                                    <th class="text-center">Khách hàng</th>
+                                    <th class="text-center">Ghi chú</th>
+                                    <th class="text-center">Tổng</th>
+                                    <th class="text-center">Tiền còn phải thu</th>
+                                    <th class="text-center">Tiền đã thu</th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <!--<th class="text-right"><t t-esc="widget.sale_data.total_sale_waiting_phieu_thu"/></th>-->
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!--<tr t-foreach="widget.sale_data.sale_waiting_phieu_thu_list" t-as="swp">-->
+                                    <!--<td style="width:10%"><span t-esc="swp['name']"/></td>-->
+                                    <!--<td style="width:8%">-->
+                                        <!--<t t-if="swp['confirmation_date']">-->
+                                            <!--<span t-esc="swp['confirmation_date'].split(' ')[0]"/><br/>-->
+                                            <!--<span t-esc="swp['confirmation_date'].split(' ')[1]"/>-->
+                                        <!--</t>-->
+                                    <!--</td>-->
+                                    <!--<td style="width:14%"><span t-esc="swp['partner_id']"/></td>-->
+                                    <!--<td style="width:20%"><span t-esc="swp['note']"/></td>-->
+                                    <!--<td style="width:8%" class="text-right"><span t-esc="swp['amount_total']"/></td>-->
+                                    <!--<td style="width:8%" class="text-right"><span t-esc="swp['con_phai_thu']"/></td>-->
+                                    <!--<td style="width:8%" class="text-right"><span t-esc="swp['so_tien_da_thu']"/></td>-->
+                                    <!--<td style="width:24%">-->
+                                        <!--<div style="width:100%;display: flex;">-->
+                                            <!--<t t-if="swp['state'] != 'cancel'">-->
+                                                <!--<a href="javascript:;" class="doash_edit" style="display: flex;width:35%" t-att-data-line-id="swp['id']">-->
+                                                    <!--&lt;!&ndash;<span class="glyphicon glyphicon-edit" style="width: 22%; font-size: 23px; color: #8CB05E;"></span>&ndash;&gt;-->
+                                                    <!--<div class="button_in_line" >-->
+                                                        <!--<img src="/vieterp_tour_manager/static/src/img/button_edit.png" style="width:30%"/>-->
+                                                    <!--</div>-->
+                                                <!--</a>-->
+                                                <!--<a href="javascript:;" class="action_cancel" style="display: flex;width:35%; margin-left: 29%;" t-att-data-line-id="swp['id']">-->
+                                                    <!--&lt;!&ndash;<img src="/vieterp_tour_manager/static/src/img/cancel_sale.png" style="width:19%"/>&ndash;&gt;-->
+                                                    <!--<div class="button_in_line">-->
+                                                        <!--<img src="/vieterp_tour_manager/static/src/img/button_cancel.png" style="width:30%"/>-->
+                                                    <!--</div>-->
+                                                <!--</a>-->
+                                            <!--</t>-->
+                                            <!--<t t-if="swp['state'] == 'cancel'">-->
+                                                <!--<a href="javascript:;" style="display: flex;width:35%" t-att-data-line-id="swp['id']"></a>-->
+                                                <!--<a href="javascript:;" class="action_set_draft" style="display: flex;width:35%; margin-left: 29%;" t-att-data-line-id="swp['id']">-->
+                                                    <!--<div class="button_in_line" >-->
+                                                        <!--<img src="/vieterp_tour_manager/static/src/img/button_set_draft.png" style="width:30%"/>-->
+                                                    <!--</div>-->
+                                                <!--</a>-->
+                                            <!--</t>-->
+
+                                        <!--</div>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                            </tbody>
+                        </table>
+
+                      <div style="font-size: 17px; margin: 10px 0px;">
+                            <strong>Danh sách đơn hàng chờ Vận hành xử lý</strong>
+                      </div>
+                      <table class="o_list_view table table-condensed table-striped">
+                        <thead>
+                            <tr class="text-center">
+                                <th class="text-center">Mã đơn hàng</th>
+                                <th class="text-center">Thời gian tạo</th>
+                                <th class="text-center">Khách hàng</th>
+                                <th class="text-center">Ghi chú</th>
+                                <th class="text-center">Tổng</th>
+                                <th class="text-center">TT thanh toán</th>
+                                <th class="text-center">TT hoạt động</th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <!--<th class="text-right"><t t-esc="widget.sale_data.total_sale_ready"/></th>-->
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!--<tr t-foreach="widget.sale_data.sale_ready_list" t-as="sr">-->
+                                <!--<td style="width:10%"><span t-esc="sr['name']"/></td>-->
+                                <!--<td style="width:8%">-->
+                                    <!--<t t-if="sr['confirmation_date']">-->
+                                        <!--<span t-esc="sr['confirmation_date'].split(' ')[0]"/><br/>-->
+                                        <!--<span t-esc="sr['confirmation_date'].split(' ')[1]"/>-->
+                                    <!--</t>-->
+                                <!--</td>-->
+                                <!--<td style="width:14%"><span t-esc="sr['partner_id']"/></td>-->
+                                <!--<td style="width:20%"><span t-esc="sr['note']"/></td>-->
+                                <!--<td style="width:8%" class="text-right"><span t-esc="sr['amount_total']"/></td>-->
+                                <!--<td style="width:8%" class="text-right"><span t-esc="sr['trang_thai_tt']"/></td>-->
+                                <!--<td style="width:8%" class="text-right"><span t-esc="sr['trang_thai_dh']"/></td>-->
+                                <!--<td style="width:24%">-->
+                                    <!--<div style="width:100%;display: flex;">-->
+                                        <!--<a href="javascript:;" class="doash_edit" style="display: flex;width:35%" t-att-data-line-id="sr['id']">-->
+                                            <!--&lt;!&ndash;<span class="glyphicon glyphicon-edit" style="width: 22%; font-size: 23px; color: #8CB05E;"></span>&ndash;&gt;-->
+                                            <!--<div class="button_in_line">-->
+                                                <!--<img src="/vieterp_tour_manager/static/src/img/button_edit.png" style="width:30%"/>-->
+                                            <!--</div>-->
+                                        <!--</a>-->
+                                        <!--<t t-if="sr['trang_thai_dh'] != 'Delivering'">-->
+                                            <!--<a href="javascript:;" class="action_cancel" style="display: flex;width:35%; margin-left: 29%;" t-att-data-line-id="sr['id']">-->
+                                                <!--&lt;!&ndash;<img src="/vieterp_tour_manager/static/src/img/cancel_sale.png" style="width:19%"/>&ndash;&gt;-->
+                                                <!--<div class="button_in_line">-->
+                                                    <!--<img src="/vieterp_tour_manager/static/src/img/button_cancel.png" style="width:30%"/>-->
+                                                <!--</div>-->
+                                            <!--</a>-->
+                                        <!--</t>-->
+                                    <!--</div>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                        </tbody>
+                    </table>
+
+                      <div style="font-size: 17px; margin: 10px 0px;">
+                            <strong>Danh sách đơn hàng chờ Thu công nợ</strong>
+                      </div>
+                      <table class="o_list_view table table-condensed table-striped">
+                            <thead>
+                                <tr class="text-center">
+                                    <th class="text-center">Mã đơn hàng</th>
+                                    <th class="text-center">Thời gian tạo</th>
+                                    <th class="text-center">Khách hàng</th>
+                                    <th class="text-center">Ghi chú</th>
+                                    <th class="text-center">Tổng</th>
+                                    <th class="text-center">Tiền còn phải thu</th>
+                                    <th class="text-center">Tiền đã thu</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <!--<th class="text-right"><t t-esc="widget.sale_data.total_sale_done"/></th>-->
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!--<tr t-foreach="widget.sale_data.sale_done_list" t-as="sd">-->
+                                    <!--<td style="width:12%"><span t-esc="sd['name']"/></td>-->
+                                    <!--<td style="width:12%">-->
+                                        <!--<t t-if="sd['confirmation_date']">-->
+                                            <!--<span t-esc="sd['confirmation_date'].split(' ')[0]"/><br/>-->
+                                            <!--<span t-esc="sd['confirmation_date'].split(' ')[1]"/>-->
+                                        <!--</t>-->
+                                    <!--</td>-->
+                                    <!--<td style="width:18%"><span t-esc="sd['partner_id']"/></td>-->
+                                    <!--<td style="width:28%"><span t-esc="sd['note']"/></td>-->
+                                    <!--<td style="width:10%" class="text-right"><span t-esc="sd['amount_total']"/></td>-->
+                                    <!--<td style="width:10%" class="text-right"><span t-esc="sd['con_phai_thu']"/></td>-->
+                                    <!--<td style="width:10%" class="text-right"><span t-esc="sd['so_tien_da_thu']"/></td>-->
+                                <!--</tr>-->
+                            </tbody>
+                        </table>
+                </div>
+              </div>
+          </div>
+        </div>
+    </t>
+</templates>

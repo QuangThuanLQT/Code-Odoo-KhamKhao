@@ -1,0 +1,27 @@
+version: '2.4'
+services:
+  db:
+    restart: always
+    image: postgres:10.0-alpine
+    environment:
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+    container_name: v_db
+    ports:
+      - 5432:5432
+    networks:
+      - vieterp-net
+  redis:
+    image: redis:5-alpine
+    container_name: v_redis
+    ports:
+      - 6379:6379
+    networks:
+      - vieterp-net
+volumes:
+  db:
+  redis:
+
+networks:
+  vieterp-net:
+   name: vieterp-odoo-network

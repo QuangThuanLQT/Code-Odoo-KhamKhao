@@ -1,0 +1,141 @@
+<odoo>
+  <data>
+      <record model="ir.ui.view" id="purchase_tour_tree">
+          <field name="name">view.purchase.tour.tree</field>
+          <field name="model">purchase.tour</field>
+          <field name="arch" type="xml">
+              <tree>
+                  <field name="ma_so_du_toan"/>
+                  <field name="lich_trinh"/>
+                  <field name="start_date"/>
+                  <field name="end_date"/>
+                  <field name="dieu_hanh"/>
+              </tree>
+          </field>
+      </record>
+    <record model="ir.ui.view" id="purchase_tour_form">
+          <field name="name">view.purchase.tour.form</field>
+          <field name="model">purchase.tour</field>
+          <field name="arch" type="xml">
+              <form>
+                  <header>
+                      <button name="upadte_purchase_order" type="object" string="Cập nhật phiếu mua hàng" class="btn-primary" attrs="{'invisible': [('tour_type','=','tour_tyc')]}"/>
+                      <button name="upadte_purchase_order_tyc" type="object" string="Cập nhật phiếu mua hàng" class="btn-primary" attrs="{'invisible': [('tour_type','=','tour_ghep')]}"/>
+                  </header>
+                  <sheet>
+                      <div class="oe_button_box" name="button_box">
+                          <button name="purchase_action" class="oe_stat_button" type="object" icon="fa-usd">
+                                <field string="Phiếu mua hàng" name="count_purchase_order" widget="statinfo"/>
+                            </button>
+                      </div>
+                      <group>
+                          <group>
+                              <field name="ma_so_du_toan"/>
+                              <field name="tour_type" widget="selection" attrs="{'readonly': [('count_purchase_order','!=',0)]}"/>
+                              <field name="sale_order_tour" attrs="{'invisible': [('tour_type','=','tour_ghep')], 'required' : [('tour_type','=','tour_tyc')]}" />
+                              <field name="tour_code" attrs="{'invisible': [('tour_type','=','tour_ghep')]}" />
+                              <field name="product_tyc_id" attrs="{'invisible': [('tour_type','=','tour_ghep')]}" />
+                               <field name="dieu_hanh"/>
+                          </group>
+                          <group>
+                              <field name="lich_trinh" attrs="{'invisible': [('tour_type','=','tour_tyc')]}"/>
+                              <field name="start_date"/>
+                              <field name="end_date"/>
+                              <field name="sale_order_ids" invisible="1"/>
+                          </group>
+
+                      </group>
+                      <notebook>
+                          <page string="Điều hành" attrs="{'invisible': [('tour_type','!=','tour_tyc')]}">
+                              <field name="detail_purchase_tyc_ids">
+                                  <tree editable="bottom">
+                                      <field name="name"/>
+                                      <field name="partner_id"/>
+                                      <field name="chi_tiet"/>
+                                      <field name="so_luong"/>
+                                      <field name="so_pax"/>
+                                      <field name="don_gia"/>
+                                      <field name="sale_price"/>
+                                      <field name="dieu_hanh_price"/>
+                                      <field name="note"/>
+                                      <field name="du_toan_so_line_id" invisible="1"/>
+                                  </tree>
+                              </field>
+                              <group class="oe_subtotal_footer oe_right">
+                                <field name="tong_sale" class="oe_subtotal_footer oe_right"/>
+                                <field name="tong_dieu_hanh" class="oe_subtotal_footer oe_right"/>
+                            </group>
+                          </page>
+                        <page string="Điều hành" attrs="{'invisible': [('tour_type','=','tour_tyc')]}">
+                            <separator string="Đơn hàng"/>
+                            <field name="purchase_tour_line" readonly="False">
+                                <tree editable="bottom" options="{'no_create':True}">
+                                    <field name="sale_tour_id" options="{'no_create':True}"  context="{'sale_order_ids' : parent.sale_order_ids}"/>
+                                    <!--<field name="slk" readonly="1"/>-->
+                                    <field name="dt" readonly="1"/>
+                                    <field name="phu_thu"/>
+                                    <field name="giam_tru"/>
+                                    <field name="tc"/>
+                                    <field name="thu_ho"/>
+                                    <field name="con_lai"/>
+                                    <field name="hdv"/>
+                                    <field name="noi_dung"/>
+                                    <field name="start_date" readonly="1"/>
+                                    <field name="end_date" readonly="1"/>
+                                </tree>
+                            </field>
+                             <group class="oe_subtotal_footer oe_right">
+                                <field name="tong_tc" class="oe_subtotal_footer oe_right"/>
+                            </group>
+                            <separator string="Dự toán"/>
+                            <field name="du_toan_line" readonly="False">
+                                <tree editable="bottom" options="{'no_create':True}">
+                                    <field name="nhom" options="{'no_create':True}" attrs="{'readonly' : [('check_line_header', '=', True)]}" context="{'sale_order_ids' : parent.sale_order_ids}"/>
+                                    <field name="slk"/>
+                                    <field name="check_line_header" invisible="1"/>
+                                    <field name="ngay_1" attrs="{'readonly' : [('check_line_header', '=', True)]}"/>
+                                    <field name="ngay_2" attrs="{'readonly' : [('check_line_header', '=', True)]}"/>
+                                    <field name="ngay_3" attrs="{'readonly' : [('check_line_header', '=', True)]}"/>
+                                    <field name="ngay_4" attrs="{'readonly' : [('check_line_header', '=', True)]}"/>
+                                    <field name="ngay_5" attrs="{'readonly' : [('check_line_header', '=', True)]}"/>
+                                </tree>
+                            </field>
+                            <separator string="Điều hành"/>
+                            <field name="detail_purchase_line">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="muc"/>
+                                    <field name="partner_id" context="{'default_supplier' : True}"/>
+                                    <field name="so_phong" options="{'no_create':True}" />
+                                    <field name="sl"/>
+                                    <field name="so_pax"/>
+                                    <field name="don_gia"/>
+                                    <field name="phu_thu"/>
+                                    <field name="du_toan"/>
+                                    <field name="thuc_te"/>
+                                    <field name="hdv_thu"/>
+                                    <field name="sale_purchase_id" options="{'no_create':True}" widget="many2many_tags"/>
+                                    <field name="noi_dung"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="tong_hdv_thu" class="oe_subtotal_footer oe_right"/>
+                                <field name="tong_du_toan" class="oe_subtotal_footer oe_right"/>
+                                <field name="tong_thuc_te" class="oe_subtotal_footer oe_right"/>
+                            </group>
+                        </page>
+                      </notebook>
+                  </sheet>
+              </form>
+          </field>
+      </record>
+      <record model="ir.actions.act_window" id="purchase_tour_action">
+          <field name="name">Điều hành</field>
+          <field name="res_model">purchase.tour</field>
+          <field name="view_mode">tree,form</field>
+      </record>
+
+    <menuitem id="purchase_menu_parent" name="Điều hành" parent="vieterp_sale_tour.tour_menu_parent" sequence="2"/>
+    <menuitem id="sale_tour_menu" name="Điều hành" parent="purchase_menu_parent" action="purchase_tour_action"/>
+  </data>
+</odoo>

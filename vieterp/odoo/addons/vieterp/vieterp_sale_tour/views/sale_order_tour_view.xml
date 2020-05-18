@@ -1,0 +1,156 @@
+<odoo>
+  <data>
+      <record id="view_sale_order_form_ihr" model="ir.ui.view">
+            <field name="name">sale.order.form.ihr.ihr</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <header position="inside">
+                    <button class="oe_stat_button" type="object" name="open_validate" icon="fa-usd" string="Thu tiền" widget="statinfo" attrs="{'invisible' : ['|',('so_tien_can_thu', '=', 0),('invoice_count', '=', 0)]}"/>
+                    <button class="oe_stat_button" type="object" name="update_invoice_sale_tour" icon="fa-usd" string="Cập nhật đơn hàng" widget="statinfo" attrs="{'invisible' : ['|',('is_tour_booking', '=', False),('invoice_count', '=', 0)]}"/>
+                </header>
+                <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d']" position="attributes">
+                    <attribute name="attrs">{'invisible' : ['|',('invoice_count', '>', 0),('invoice_status', '!=', 'to invoice')]}</attribute>
+                </xpath>
+                 <xpath expr="//field[@name='partner_id']" position="after">
+                     <field name="is_tour_booking"/>
+                     <field name="tour" attrs="{'invisible' : [('is_tour_booking', '=', False)]}"/>
+                     <field name="tour_type" attrs="{'invisible' : [('is_tour_booking', '=', False)]}"/>
+                     <field name="start_date" attrs="{'invisible' : [('is_tour_booking', '=', False)]}"/>
+                     <field name="end_date" attrs="{'invisible' : [('is_tour_booking', '=', False)]}"/>
+                     <field name="type_san_pham_khac" attrs="{'invisible' : [('is_tour_booking', '=', True)]}" options="{'no_create': True}"/>
+                     <field name="ghi_chu"/>
+                 </xpath>
+                <field name="name" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="note" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="sale_name" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="so_tien_da_thu"/>
+                    <field name="so_tien_can_thu"/>
+                    <field name="thu_ho" attrs="{'readonly' : [('invoice_count', '=', 0)]}"/>
+                </xpath>
+                <!--<xpath expr="//field[@name='amount_tax']" position="after">-->
+                    <!--<field name="ve_cap" attrs="{'readonly' : [('state', '=', 'sale')]}"/>-->
+                    <!--<field name="phu_thu" attrs="{'readonly' : [('state', '=', 'sale')]}"/>-->
+                <!--</xpath>-->
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="editable">bottom</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']" position="after">
+                    <separator string="Dự toán"/>
+                            <field name="du_toan_sale_order_line">
+                                  <tree editable="bottom">
+                                      <field name="name"/>
+                                      <field name="partner_id"/>
+                                      <field name="chi_tiet"/>
+                                      <field name="so_luong"/>
+                                      <field name="so_pax"/>
+                                      <field name="don_gia"/>
+                                      <field name="sale_price"/>
+                                      <field name="note"/>
+                                      <field name="du_toan_sale_order_id" invisible="1"/>
+                                  </tree>
+                              </field>
+                    <separator string="Phụ thu"/>
+                            <field name="phu_thu_line">
+                                  <tree editable="bottom">
+                                      <field name="thong_tin"/>
+                                      <field name="so_luong"/>
+                                      <field name="don_gia"/>
+                                      <field name="thanh_tien"/>
+                                  </tree>
+                              </field>
+                     <group class="oe_subtotal_footer oe_right">
+                            <field name="tong_phu_thu" class="oe_subtotal_footer oe_right"/>
+                     </group>
+                    <div style="margin-bottom:50px !important;">
+                    <separator string="Giảm trừ"/>
+                            <field name="giam_tru_line">
+                                  <tree editable="bottom">
+                                      <field name="thong_tin"/>
+                                      <field name="so_luong"/>
+                                      <field name="don_gia"/>
+                                      <field name="thanh_tien"/>
+                                  </tree>
+                              </field>
+                     <group class="oe_subtotal_footer oe_right" >
+                            <field name="tong_giam_tru" class="oe_subtotal_footer oe_right" />
+                     </group>
+                    </div>
+                </xpath>
+                <xpath expr="//notebook/page/field[@name='note']" position="before">
+                    <separator string="Danh sách khách"/>
+                     <field name="danh_sach_khach" class="oe_inline" />
+                    <separator string="Khách sạn"/>
+                    <field name="khach_san" class="oe_inline" />
+                    <separator string="Lưu ý"/>
+                </xpath>
+            </field>
+      </record>
+
+      <record id="view_order_tree_tour_ihr" model="ir.ui.view">
+            <field name="name">view.order.tree.tour.ihr</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//field[@name='user_id']" position="after">
+                     <field name="tour"/>
+                 </xpath>
+                <field name="name" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="sale_name"/>
+                </xpath>
+            </field>
+      </record>
+      <record id="view_quotation_tree_tour_ihr" model="ir.ui.view">
+            <field name="name">view.quotation.tree.tour.ihr</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//field[@name='user_id']" position="after">
+                     <field name="tour"/>
+                 </xpath>
+                <field name="name" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="sale_name"/>
+                </xpath>
+            </field>
+      </record>
+      <record model="ir.ui.view" id="validate_sale_form_view">
+            <field name="name">validate.sale.form</field>
+            <field name="model">validate.sale</field>
+            <field name="arch" type="xml">
+                <form string="Validate">
+                    <group>
+                        <field name="sale_order_id" invisible="1"/>
+                        <field name="partner_id"/>
+                        <field name="payment_method" options="{'no_create': True}"/>
+                        <field name="so_tien"/>
+                    </group>
+                    <footer>
+                        <button name="create_sale_receipt" type="object" string="Chấp nhận" class="oe_highlight"/>
+                        <button string="Huỷ" class="btn-default" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+      <record model="ir.actions.act_window" id="validate_sale_action">
+            <field name="name">Thu tiền</field>
+            <field name="res_model">validate.sale</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="validate_sale_form_view"/>
+            <field name="target">new</field>
+      </record>
+  </data>
+</odoo>

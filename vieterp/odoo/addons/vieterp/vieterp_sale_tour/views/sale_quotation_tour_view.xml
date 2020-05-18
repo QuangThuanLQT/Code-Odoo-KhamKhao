@@ -1,0 +1,53 @@
+<odoo>
+  <data>
+      <record id="quotation_tour_action" model="ir.actions.act_window">
+            <field name="name">Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="sale.view_quotation_tree"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="domain">[('state', 'in', ('draft', 'sent', 'cancel')),('is_tour_booking', '=', True)]</field>
+            <field name="context">{'hide_sale': True,'default_is_tour_booking': True}</field>
+        </record>
+      <record id="tour_sale_order_action" model="ir.actions.act_window">
+            <field name="name">Sales Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale"/>
+            <field name="context">{'default_is_tour_booking': True}</field>
+            <field name="domain">[('state', 'not in', ('draft', 'sent', 'cancel')),('is_tour_booking', '=', True)]</field>
+        </record>
+      <record id="quotation_spk_action" model="ir.actions.act_window">
+            <field name="name">Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="sale.view_quotation_tree"/>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="domain">[('state', 'in', ('draft', 'sent', 'cancel')),('is_tour_booking', '=', False)]</field>
+            <field name="context">{'hide_sale': True,'default_is_tour_booking': False}</field>
+        </record>
+      <record id="sale_order_spk_action" model="ir.actions.act_window">
+            <field name="name">Sales Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale"/>
+            <field name="context">{'default_is_tour_booking': False}</field>
+            <field name="domain">[('state', 'not in', ('draft', 'sent', 'cancel')),('is_tour_booking', '=', False)]</field>
+        </record>
+      <menuitem id="tour_label" name="Tour" parent="dat_tour_menu_parent"/>
+      <menuitem id="sale_quotation_menu" name="Báo giá tour" parent="tour_label" action="quotation_tour_action"/>
+      <menuitem id="sale_order_menu" name="Đặt Tour" parent="tour_label" action="tour_sale_order_action"/>
+
+      <menuitem id="spk_label" name="Sản phẩm khác" parent="dat_tour_menu_parent"/>
+      <menuitem id="quotation_spk_menu" name="Báo giá sản phẩm" parent="spk_label" action="quotation_spk_action"/>
+      <menuitem id="sale_order_spk_menu" name="Đặt sản phẩm" parent="spk_label" action="sale_order_spk_action"/>
+  </data>
+</odoo>

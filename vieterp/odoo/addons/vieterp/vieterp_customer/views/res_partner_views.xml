@@ -1,0 +1,23 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="view_partner_tree_inr">
+            <field name="name">view.partner.tree.ihr</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='email']" position="replace">
+                    <field name="email" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='phone']" position="after">
+                    <field name="user_id" />
+                    <field name="create_date" />
+                    <!--<field name="last_invoice_date_sub" />-->
+                    <!--<field name="sale_amount" />-->
+                    <!--<field name="return_amount" />-->
+                    <!--<field name="sale_total_amount" />-->
+                    <!--<field name="return_amount" />-->
+                </xpath>
+            </field>
+        </record>
+  </data>
+</odoo>

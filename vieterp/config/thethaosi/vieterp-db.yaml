@@ -1,0 +1,313 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dbmaster
+  namespace: thethaosi
+  labels:
+    app: dbmaster
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: dbmaster
+    tier: backend
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dbmaster
+  namespace: thethaosi
+  labels:
+    app: dbmaster
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: dbmaster
+        tier: backend
+    spec:
+      containers:
+      - image: gcr.io/<PROJECT>/postgresql:10.0-master
+        name: dbmaster
+        env:
+        - name: POSTGRES_USER
+          value: odoo
+        - name: POSTGRES_PASSWORD
+          value: odoo
+        - name: POSTGRES_DB
+          value: odoo
+        - name: PG_REP_USER
+          value: odoo
+        - name: PG_REP_PASSWORD
+          value: odoo
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        ports:
+        - containerPort: 5432
+          name: dbmaster
+        volumeMounts:
+        - name: <BRANCH>-db-pvc
+          mountPath: /var/lib/postgresql/data
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "400m"
+          limits:
+            memory: "4Gi"
+            cpu: "600m"
+      volumes:
+      - name: <BRANCH>-db-pvc
+        persistentVolumeClaim:
+          claimName: <BRANCH>-db-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dbslave
+  namespace: thethaosi
+  labels:
+    app: dbslave
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: dbslave
+    tier: backend
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dbslave
+  namespace: thethaosi
+  labels:
+    app: dbslave
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: dbslave
+        tier: backend
+    spec:
+      containers:
+      - image: gcr.io/<PROJECT>/postgresql:10.0-slave
+        name: dbslave
+        env:
+        - name: POSTGRES_USER
+          value: odoo
+        - name: POSTGRES_PASSWORD
+          value: odoo
+        - name: POSTGRES_DB
+          value: odoo
+        - name: PG_REP_USER
+          value: odoo
+        - name: PG_REP_PASSWORD
+          value: odoo
+        - name: PG_MASTER_HOST
+          value: dbmaster
+        ports:
+        - containerPort: 5432
+          name: dbslave
+        resources:
+          requests:
+            memory: "600Mi"
+            cpu: "150m"
+          limits:
+            memory: "1200Mi"
+            cpu: "300m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dbslave2
+  namespace: thethaosi
+  labels:
+    app: dbslave2
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: dbslave2
+    tier: backend
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dbslave2
+  namespace: thethaosi
+  labels:
+    app: dbslave2
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: dbslave2
+        tier: backend
+    spec:
+      containers:
+      - image: gcr.io/<PROJECT>/postgresql:10.0-slave
+        name: dbslave2
+        env:
+        - name: POSTGRES_USER
+          value: odoo
+        - name: POSTGRES_PASSWORD
+          value: odoo
+        - name: POSTGRES_DB
+          value: odoo
+        - name: PG_REP_USER
+          value: odoo
+        - name: PG_REP_PASSWORD
+          value: odoo
+        - name: PG_MASTER_HOST
+          value: dbmaster
+        ports:
+        - containerPort: 5432
+          name: dbslave2
+        resources:
+          requests:
+            memory: "600Mi"
+            cpu: "150m"
+          limits:
+            memory: "1200Mi"
+            cpu: "300m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dbslave3
+  namespace: thethaosi
+  labels:
+    app: dbslave3
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: dbslave3
+    tier: backend
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dbslave3
+  namespace: thethaosi
+  labels:
+    app: dbslave3
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: dbslave3
+        tier: backend
+    spec:
+      containers:
+      - image: gcr.io/<PROJECT>/postgresql:10.0-slave
+        name: dbslave3
+        env:
+        - name: POSTGRES_USER
+          value: odoo
+        - name: POSTGRES_PASSWORD
+          value: odoo
+        - name: POSTGRES_DB
+          value: odoo
+        - name: PG_REP_USER
+          value: odoo
+        - name: PG_REP_PASSWORD
+          value: odoo
+        - name: PG_MASTER_HOST
+          value: dbmaster
+        ports:
+        - containerPort: 5432
+          name: dbslave3
+        resources:
+          requests:
+            memory: "600Mi"
+            cpu: "150m"
+          limits:
+            memory: "1200Mi"
+            cpu: "300m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  namespace: thethaosi
+  labels:
+    app: db
+spec:
+  ports:
+  - name: db
+    port: 5432
+    targetPort: 5432
+  - name: pcp
+    port: 9898
+    targetPort: 9898
+  selector:
+    app: db
+    tier: backend
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: db
+  namespace: thethaosi
+  labels:
+    app: db
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: db
+        tier: backend
+    spec:
+      containers:
+      - image: gcr.io/<PROJECT>/pgpool2:3.7-10.0
+        name: db
+        env:
+        - name: PCP_USER
+          value: odoo
+        - name: PCP_PASSWORD
+          value: odoo
+        - name: WAIT_BACKEND_TIMEOUT
+          value: "60"
+        - name: CHECK_USER
+          value: odoo
+        - name: CHECK_PASSWORD
+          value: odoo
+        - name: CHECK_PGCONNECT_TIMEOUT
+          value: "3"
+        - name: DB_USERS
+          value: odoo
+        - name: BACKENDS
+          value: "0:dbmaster:5432:1:/var/lib/postgresql/data:ALLOW_TO_FAILOVER,1:dbslave::::,2:dbslave2::::,3:dbslave3::::"
+        - name: REQUIRE_MIN_BACKENDS
+          value: "3"
+        - name: CONFIGS
+          value: "num_init_children:250,max_pool:4"
+        ports:
+        - containerPort: 5432
+          name: db
+        - containerPort: 9898
+          name: pcp
+        resources:
+          requests:
+            memory: "600Mi"
+            cpu: "150m"
+          limits:
+            memory: "1200Mi"
+            cpu: "300m"

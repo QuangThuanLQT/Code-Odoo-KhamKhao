@@ -1,0 +1,68 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: thethaosi-filestore-nfs
+  namespace: thethaosi
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: file.konek.svc.cluster.local
+    path: "/.local/share/Odoo/filestore/"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: thethaosi-filestore-nfs
+  namespace: thethaosi
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: thethaosi-venv-nfs
+  namespace: thethaosi
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: file.konek.svc.cluster.local
+    path: "/venv/"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: thethaosi-venv-nfs
+  namespace: thethaosi
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: <BRANCH>-db-pvc
+  namespace: thethaosi
+  labels:
+    app: db
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi

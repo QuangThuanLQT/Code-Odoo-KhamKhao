@@ -1,0 +1,155 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+  namespace: <BRANCH>
+data:
+  nginx.conf: |-
+    user  nginx;
+    worker_processes  2;
+    error_log  /var/log/nginx/error.log warn;
+    pid        /var/run/nginx.pid;
+    events {
+      worker_connections  1024;
+    }
+    http {
+      sendfile        on;
+      keepalive_timeout  65;
+
+      upstream app {
+          server odoo:8069;
+      }
+      upstream mobile {
+          server mobile:8069;
+      }
+      upstream applongpolling {
+          server odoo:8069;
+      }
+      upstream mobilelongpolling {
+          server mobile:8069;
+      }
+
+      server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+
+        server_name _;
+
+        proxy_set_header   Host              $host;
+        proxy_set_header   X-Real-IP         $remote_addr;
+        proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto https;
+        proxy_set_header   X-Forwarded-Port  443;
+
+        client_max_body_size       400m;
+        client_body_buffer_size    128k;
+
+        proxy_connect_timeout      900000;
+        proxy_send_timeout         900000;
+        proxy_read_timeout         900000;
+        proxy_buffer_size          4k;
+        proxy_buffers              4 32k;
+        proxy_busy_buffers_size    64k;
+        proxy_temp_file_write_size 64k;
+
+        add_header 'Access-Control-Allow-Origin' '*';
+        add_header 'Access-Control-Allow-Headers' 'Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range';
+        add_header 'Access-Control-Allow-Methods' 'GET,POST,OPTIONS,PUT,DELETE,PATCH';
+
+        # Redirect requests to odoo backend server
+        location /longpolling {
+          if ($host ~* kapp.vn) {
+            proxy_pass http://mobilelongpolling;
+          }
+          if ($host !~* kapp.vn) {
+            proxy_pass http://applongpolling;
+          }
+        }
+        location / {
+          if ($request_method = 'OPTIONS') {
+            add_header 'Access-Control-Allow-Origin' '*';
+            add_header 'Access-Control-Allow-Headers' 'Authorization,Accept,Origin,DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range';
+            add_header 'Access-Control-Allow-Methods' 'GET,POST,OPTIONS,PUT,DELETE,PATCH';
+            add_header 'Access-Control-Max-Age' 1728000;
+            add_header 'Content-Type' 'text/plain charset=UTF-8';
+            add_header 'Content-Length' 0;
+            return 200;
+          }
+          proxy_redirect off;
+          proxy_set_header host $host;
+          proxy_set_header X-real-ip $remote_addr;
+          proxy_set_header X-forward-for $proxy_add_x_forwarded_for;
+          if ($host ~* kapp.vn) {
+            proxy_pass http://mobile;
+          }
+          if ($host !~* kapp.vn) {
+            proxy_pass http://app;
+          }
+        }
+
+        # common gzip
+        gzip_types text/css text/less text/plain text/xml application/xml application/json application/javascript;
+        gzip on;
+      }
+    }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  namespace: <BRANCH>
+  labels:
+    app: nginx
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: nginx
+    tier: frontend
+  sessionAffinity: None
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: <BRANCH>
+  labels:
+    app: nginx
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+        tier: frontend
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: proxy-config
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+        resources:
+          requests:
+            memory: "10Mi"
+            cpu: "30m"
+          limits:
+            memory: "20Mi"
+            cpu: "60m"
+      volumes:
+      - name: proxy-config
+        configMap:
+          name: nginx-conf

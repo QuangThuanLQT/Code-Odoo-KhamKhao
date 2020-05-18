@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+         <record id="xe" model="san.pham.khac">
+            <field name="name">Xe</field>
+        </record>
+
+        <record id="ba_na" model="san.pham.khac">
+            <field name="name">Bà Nà</field>
+        </record>
+
+        <record id="ve_ba_na" model="san.pham.khac">
+            <field name="name">Vé Bà Nà</field>
+        </record>
+
+    </data>
+</odoo>

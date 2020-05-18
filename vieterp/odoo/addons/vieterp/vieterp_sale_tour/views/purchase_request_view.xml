@@ -1,0 +1,14 @@
+<odoo>
+  <data>
+      <record id="view_purchase_request_form_ihr" model="ir.ui.view">
+            <field name="name">sale.order.form.ihr.ihr</field>
+            <field name="model">purchase.request</field>
+            <field name="inherit_id" ref="purchase_request.view_purchase_request_form"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//field[@name='requested_by']" position="after">
+                     <field name="tour"/>
+                 </xpath>
+            </field>
+      </record>
+  </data>
+</odoo>

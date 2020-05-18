@@ -1,0 +1,43 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: smtp
+  namespace: konek
+spec:
+  ports:
+    - name: smtp
+      port: 25
+  selector:
+    app: smtp
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: smtp
+  namespace: konek
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smtp
+  template:
+    metadata:
+      labels:
+        app: smtp
+    spec:
+      containers:
+      - name: smtp
+        image: bytemark/smtp:stretch
+        ports:
+          - name: smtp
+            containerPort: 25
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            memory: "50Mi"
+            cpu: "50m"
+          limits:
+            memory: "100Mi"
+            cpu: "100m"

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="SearchProductCateg">
+        <div class="btn-group btn-group-sm" >
+            <div style="margin-left: 0px; margin-top: 2px; padding-right: 10px;">
+                <span style="float: left;">
+                    <select class="select_categ_field form-control" style="height: 30px;" >
+                        <option value="categ_id">Nhóm hàng</option>
+                    </select>
+                </span>
+                <span style="float: left; margin-left: 2px;">
+                    <input id="input_categ_name" style="height: 30px;width: 200px" class="categ_name form-control" size="10" placeholder="Tìm kiếm nhóm hàng...." type="text" />
+                </span>
+            </div>
+        </div>
+    </t>
+    <t t-name="buttons_print_excel">
+        <button type="button" class='btn btn-sm btn-primary o_picking_export_overview' style="background: lightgray;border :1px solid gray">Xuất file</button>
+    </t>
+
+    <t t-extend="SkyERP.ClearAll">
+        <t t-jquery="input[class='button_clear_all']" t-operation="replace">
+            <input class="button_clear_all" style="height: 30px;border-radius: 4px" type="button" size="10" value="ALL"
+                   onclick="$('.categ_name').val('');" />
+        </t>
+    </t>
+</templates>

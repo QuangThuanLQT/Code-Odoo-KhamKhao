@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="ControlPanel">
+        <t t-jquery="div.o_control_panel" t-operation="replace">
+            <div class="o_control_panel">
+                <ol class="breadcrumb"/>
+                <div class="o_cp_searchview"/>
+                <div class="o_cp_left">
+                    <div class="o_cp_buttons"/>
+                    <div class="o_cp_sidebar"/>
+                </div>
+                <div class="o_cp_right">
+                    <div class="btn-group o_search_options"/>
+                    <div class="o_cp_pager"/>
+                    <div class="btn-group btn-group-sm o_cp_switch_buttons"/>
+                </div>
+                <div class="quo_search_by_range hidden" style="margin-top:2px" >
+                </div>
+                <div class="pr_search_by_range hidden" style="margin-top:2px" >
+                </div>
+            </div>
+        </t>
+    </t>
+    <t t-name="SkyERP.SaleState">
+        <div class="sky-search btn-group btn-group-sm">
+            <div style="margin-left: 0px; margin-top: 2px; padding-right: 10px;">
+                <span style="float: left;">
+                    <select class="sky_select_state form-control" style="height: 30px;" >
+                        <option t-foreach="sky_fields" t-as="field" t-att-value="field[0]">
+                            <t t-esc="field[1]"/>
+                        </option>
+                    </select>
+                </span>
+                <span style="float: left; margin-left: 2px;">
+                    <select class="sky_state form-control" style="height: 30px;" >
+                        <option value="">All</option>
+                        <option value="draft">Quotation</option>
+                        <option value="sent">Quotation Sent</option>
+                        <option value="sale">Sale Order</option>
+                        <option value="cancel">Cancelled</option>
+                    </select>
+                </span>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="SkyERP.Creater">
+        <div class="sky-search btn-group btn-group-sm" >
+            <div style="margin-left: 0px; margin-top: 2px; padding-right: 10px;">
+                <span style="float: left;">
+                    <select class="sky_select_create_uid form-control" style="height: 30px;" >
+                        <option t-foreach="sky_fields" t-as="field" t-att-value="field[0]">
+                            <t t-esc="field[1]"/>
+                        </option>
+                    </select>
+                </span>
+                <span style="float: left; margin-left: 2px;">
+                    <input id="input_create_uid" style="height: 30px;" class="sky_create_uid form-control" size="10" placeholder="" type="text" />
+                </span>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="SkyERP.SearchName">
+        <div class="sky-search btn-group btn-group-sm" >
+            <div style="margin-left: 0px; margin-top: 2px; padding-right: 10px;">
+                <span style="float: left;">
+                    <select class="sky_select_name form-control" style="height: 30px;" >
+                        <option t-foreach="sky_fields" t-as="field" t-att-value="field[0]">
+                            <t t-esc="field[1]"/>
+                        </option>
+                    </select>
+                </span>
+                <span style="float: left; margin-left: 2px;">
+                    <input id="input_name" style="height: 30px;" class="sky_name form-control" size="10" placeholder="" type="text" />
+                </span>
+            </div>
+        </div>
+    </t>
+    <t t-name="SkyERP.ClearAll">
+        <div class="sky-search btn-group btn-group-sm" >
+            <div style="margin-left: 0px; margin-top: 2px; padding-right: 10px;">
+                <span style="float: left; margin-left: 5px;">
+                    <input class="button_clear_all" style="height: 30px;border-radius: 4px" type="button" size="10" value="ALL" onclick="$('.sky_name').val('');$('.sky_create_uid').val('');$('.sky_state').val('');" />
+                </span>
+            </div>
+        </div>
+    </t>
+</templates>

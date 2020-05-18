@@ -1,0 +1,68 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: <BRANCH>-filestore-nfs
+  namespace: <BRANCH>
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: file.konek.svc.cluster.local
+    path: "/.local/share/Odoo/filestore/"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: <BRANCH>-filestore-nfs
+  namespace: <BRANCH>
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: <BRANCH>-venv-nfs
+  namespace: <BRANCH>
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: file.konek.svc.cluster.local
+    path: "/venv/"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: <BRANCH>-venv-nfs
+  namespace: <BRANCH>
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: <BRANCH>-db-pvc
+  namespace: <BRANCH>
+  labels:
+    app: db
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi

@@ -1,0 +1,131 @@
+<odoo>
+  <data>
+
+      <record model="ir.ui.view" id="view_sale_tour_tree">
+          <field name="name">view.sale.tour.tree</field>
+          <field name="model">sale.tour</field>
+          <field name="arch" type="xml">
+              <tree>
+                  <field name="tour_code"/>
+                  <field name="name"/>
+                  <field name="lich_trinh"/>
+                  <field name="start_date"/>
+                  <field name="end_date"/>
+                  <field name="dieu_hanh"/>
+                  <field name="hdv"/>
+                  <field name="email"/>
+                  <field name="sdt"/>
+                  <field name="state"/>
+              </tree>
+          </field>
+      </record>
+
+      <record model="ir.ui.view" id="view_sale_tour_form">
+          <field name="name">view.sale.tour.form</field>
+          <field name="model">sale.tour</field>
+          <field name="arch" type="xml">
+              <form>
+                  <header>
+                      <button name="action_confirm" string="Xác nhận" class="btn-default" type="object" states="draft"/>
+                      <button name="action_waiting" string="Thực hiện" class="btn-default" type="object" states="confirm"/>
+                      <button name="action_done" string="Hoàn tất" class="btn-default" type="object" states="waiting"/>
+                      <button name="action_cancel" string="Huỷ" class="btn-default" type="object" states="draft,confirm"/>
+                        <field name="state" widget="statusbar" />
+                  </header>
+                  <sheet>
+                      <div class="oe_button_box" name="button_box">
+                          <button name="sale_action" class="oe_stat_button" type="object" icon="fa-usd">
+                                <field string="Đơn hàng" name="count_sale_order" widget="statinfo"/>
+                            </button>
+                      </div>
+                      <div class="oe_title" >
+                            <h1>
+                                <field name="tour_code" readonly="1"/>
+                            </h1>
+                      </div>
+                      <group>
+                          <group>
+                              <field name="tour_id"/>
+                              <field name="name" invisible="1"/>
+                              <field name="type_tour"/>
+                              <field name="total_seat"/>
+                              <field name="available_seat"/>
+                          </group>
+                          <group>
+                              <field name="duration"/>
+                              <field name="start_date"/>
+                              <field name="book_date"/>
+                              <field name="dieu_hanh"/>
+                              <field name="hdv"/>
+                          </group>
+                      </group>
+                      <notebook>
+                        <page string="Biến thể Tour" name="tour_variant">
+                            <field name="sale_tour_variant_ids">
+                                <tree create="false" delete="false">
+                                    <field name="product_id"  readonly="1"/>
+                                    <field name="description"  readonly="1"/>
+                                    <field name="price"  readonly="1"/>
+                                    <field name="qty_booked"  readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                      </notebook>
+                  </sheet>
+              </form>
+          </field>
+      </record>
+
+      <record model="ir.ui.view" id="product_template_tree_view_ihr">
+          <field name="name">product.template.tree.view.ihr</field>
+          <field name="model">product.template</field>
+          <field name="inherit_id" ref="product.product_template_tree_view"/>
+          <field name="arch" type="xml">
+              <xpath expr="//field[@name='default_code']" position="attributes">
+                  <attribute name="string">Mã tour</attribute>
+              </xpath>
+              <xpath expr="//field[@name='name']" position="after">
+                  <field name="khoi_hanh_type" widget="many2many_tags"/>
+                  <field name="ghi_chu"/>
+              </xpath>
+          </field>
+      </record>
+
+       <record model="ir.actions.act_window" id="sale_tour_action">
+          <field name="name">Tour</field>
+          <field name="res_model">sale.tour</field>
+          <field name="view_mode">tree,form</field>
+           <field name="search_view_id" ref=""/>
+           <field name="context">{}</field>
+            <field name="domain">[]</field>
+      </record>
+
+      <record model="ir.actions.act_window" id="tour_mau_action">
+          <field name="name">Tour mẫu</field>
+          <field name="res_model">product.template</field>
+          <field name="view_mode">tree,form</field>
+          <field name="domain">[('type_service', '=', 'tour')]</field>
+          <field name="context">{'default_type_service' : 'tour', 'default_type' : 'service'}</field>
+      </record>
+
+      <record model="ir.actions.act_window" id="tour_mau_bien_the_action">
+          <field name="name">Tour mẫu biến thể</field>
+          <field name="res_model">product.product</field>
+          <field name="view_mode">tree,form</field>
+          <field name="domain">[('type_service', '=', 'tour')]</field>
+          <field name="context">{'default_type_service' : 'tour', 'default_type' : 'service'}</field>
+      </record>
+
+      <menuitem id="tour_menu_parent" name="Du lịch &amp; Lữ hành"/>
+
+      <menuitem id="dat_tour_menu_parent" name="Kinh doanh" parent="tour_menu_parent" sequence="1"/>
+      <!--<menuitem id="sale_tour_menu" name="Tour" parent="dat_tour_menu_parent" action="sale_tour_action"/>-->
+      <menuitem id="sale_quotation_menu" name="Báo giá" parent="dat_tour_menu_parent" action="sale.action_quotations"/>
+      <menuitem id="sale_order_menu" name="Đặt Tour" parent="dat_tour_menu_parent" action="sale.action_orders"/>
+
+      <menuitem id="tour_mau_menu_parent" name="Tour mẫu" parent="tour_menu_parent"/>
+      <menuitem id="tour_mau_menu" name="Tour mẫu" parent="tour_mau_menu_parent" action="tour_mau_action"/>
+      <menuitem id="tour_mau_bien_the_menu" name="Tour mẫu biến thể" parent="tour_mau_menu_parent" action="tour_mau_bien_the_action"/>
+
+  </data>
+</odoo>

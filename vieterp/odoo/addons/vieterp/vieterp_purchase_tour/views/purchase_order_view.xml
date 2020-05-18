@@ -1,0 +1,18 @@
+<odoo>
+  <data>
+    <record id="purchase_order_form_ihr" model="ir.ui.view">
+            <field name="name">purchase.order.form.ihr</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_qty']" position="before">
+                    <field name="so_pax"/>
+                    <field name="phu_thu"/>
+                </xpath>
+               <xpath expr="//field[@name='partner_id']" position="before">
+                 <field name="purchase_tour_id" string="Mã số dự toán"/>
+               </xpath>
+            </field>
+        </record>
+  </data>
+</odoo>

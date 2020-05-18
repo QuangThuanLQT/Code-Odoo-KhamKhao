@@ -1,0 +1,49 @@
+steps:
+- name: 'ubuntu'
+  args: ['bash', './build-no-worker.sh']
+  env:
+  - 'BRANCH=$BRANCH_NAME'
+  - 'PROJECT=$PROJECT_ID'
+  - 'SHA=$SHORT_SHA'
+  id: 'bash'
+
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'build'
+  - '--tag=gcr.io/$PROJECT_ID/odoo:$BRANCH_NAME'
+  - '--tag=gcr.io/$PROJECT_ID/odoo:$BRANCH_NAME-$SHORT_SHA'
+  - '--file=config/docker/vieterp/Dockerfile'
+  - '.'
+  wait_for: ['bash']
+  id: 'docker-odoo'
+
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'push'
+  - 'gcr.io/$PROJECT_ID/odoo:$BRANCH_NAME-$SHORT_SHA'
+  wait_for: ['docker-odoo']
+  id: 'push-odoo'
+
+- name: 'gcr.io/cloud-builders/kubectl'
+  args:
+  - 'apply'
+  - '-f'
+  - './config/$BRANCH_NAME/vieterp.yaml'
+  - '-f'
+  - './config/$BRANCH_NAME/vieterp-volume.yaml'
+  - '-f'
+  - './config/$BRANCH_NAME/vieterp-db.yaml'
+  - '-f'
+  - './config/$BRANCH_NAME/vieterp-redis.yaml'
+  - '-f'
+  - './config/$BRANCH_NAME/vieterp-odoo.yaml'
+  - '-f'
+  - './config/$BRANCH_NAME/vieterp-nginx.yaml'
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=asia-east2-a'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=konek-vn'
+  wait_for: ['push-odoo']
+
+images:
+- 'gcr.io/$PROJECT_ID/odoo:$BRANCH_NAME'
+- 'gcr.io/$PROJECT_ID/odoo:$BRANCH_NAME-$SHORT_SHA'
