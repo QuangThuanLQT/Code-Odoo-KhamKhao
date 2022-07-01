@@ -51,7 +51,7 @@ zklib
 webcolors
 duplicity
 numpy==1.14.3
-openpyxl==2.3.3
+openpyxl==2.4.2
 pyBarcode==0.8b1
 redis==2.10.6
 google-cloud-storage==1.13.0
